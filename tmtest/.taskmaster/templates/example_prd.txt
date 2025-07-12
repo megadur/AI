@@ -1,47 +1,90 @@
 <context>
-# Overview  
-[Provide a high-level overview of your product here. Explain what problem it solves, who it's for, and why it's valuable.]
+# Overview
+This application is a web-based platform that enables users to browse, view, and interact with a list of PDF documents, as well as send and read messages related to those documents. It is designed for teams, organizations, or individuals who need to manage and discuss documents in a collaborative environment. The solution streamlines document access and communication, improving productivity and knowledge sharing.
 
-# Core Features  
-[List and describe the main features of your product. For each feature, include:
-- What it does
-- Why it's important
-- How it works at a high level]
+# Core Features
+1. **User Authentication**
+   - Secure login and registration for users.
+   - Ensures only authorized access to documents and messages.
+2. **PDF Document Management**
+   - List available PDF documents.
+   - Preview and download PDFs in-browser.
+   - (Future) Upload new PDF documents.
+3. **Messaging System**
+   - Users can write and read messages related to documents.
+   - (Future) Real-time chat and notifications.
+4. **Responsive UI**
+   - Intuitive navigation for desktop and mobile users.
 
-# User Experience  
-[Describe the user journey and experience. Include:
-- User personas
-- Key user flows
-- UI/UX considerations]
+# User Experience
+**User Personas:**
+- Team members collaborating on shared documents.
+- Managers reviewing and discussing reports.
+- Individual users organizing personal or project files.
+
+**Key User Flows:**
+1. User logs in and sees a list of available PDF documents.
+2. User selects a document to preview it in-browser.
+3. User reads and writes messages related to the document.
+4. (Optional) User uploads a new PDF (future enhancement).
+
+**UI/UX Considerations:**
+- Clean, modern interface with clear document previews.
+- Easy access to messaging alongside document view.
+- Mobile-friendly design.
 </context>
 <PRD>
-# Technical Architecture  
-[Outline the technical implementation details:
-- System components
-- Data models
-- APIs and integrations
-- Infrastructure requirements]
+# Technical Architecture
+**System Components:**
+- .NET Core Web API (backend)
+- Angular SPA (frontend)
+- Database (SQL Server or PostgreSQL)
+- File storage (local or cloud, e.g., Azure Blob Storage)
 
-# Development Roadmap  
-[Break down the development process into phases:
-- MVP requirements
-- Future enhancements
-- Do not think about timelines whatsoever -- all that matters is scope and detailing exactly what needs to be build in each phase so it can later be cut up into tasks]
+**Data Models:**
+- User: Id, Username, Email, PasswordHash, etc.
+- Document: Id, Title, FilePath, UploadedBy, UploadDate
+- Message: Id, DocumentId, UserId, Content, Timestamp
+
+**APIs and Integrations:**
+- RESTful endpoints for authentication, document management, and messaging
+- PDF rendering in Angular (PDF.js)
+- (Future) SignalR for real-time messaging
+
+**Infrastructure Requirements:**
+- Hosting for backend and frontend (e.g., Azure App Service)
+- Secure file storage for PDFs
+- Database server
+
+# Development Roadmap
+**MVP Requirements:**
+- User authentication (register, login, JWT-based auth)
+- List and preview PDF documents
+- Basic messaging (send/read messages per document)
+
+**Future Enhancements:**
+- Document upload and management
+- Real-time chat/notifications (SignalR)
+- User roles and permissions
+- Search and filter for documents
+- Audit logs and activity tracking
 
 # Logical Dependency Chain
-[Define the logical order of development:
-- Which features need to be built first (foundation)
-- Getting as quickly as possible to something usable/visible front end that works
-- Properly pacing and scoping each feature so it is atomic but can also be built upon and improved as development approaches]
+1. Set up backend API and database schema
+2. Implement authentication and user management
+3. Develop document listing and preview (PDF rendering)
+4. Add messaging functionality (per document)
+5. Integrate frontend with backend APIs
+6. (Future) Add document upload and real-time features
 
-# Risks and Mitigations  
-[Identify potential risks and how they'll be addressed:
-- Technical challenges
-- Figuring out the MVP that we can build upon
-- Resource constraints]
+# Risks and Mitigations
+- **PDF Rendering Issues:** Use established libraries (PDF.js) and test with various PDF files.
+- **Real-time Messaging Complexity:** Start with simple polling, upgrade to SignalR as needed.
+- **File Storage Scalability:** Design for local storage first, plan for cloud migration if usage grows.
+- **Security:** Use secure authentication, validate file uploads, and sanitize user input.
+- **Resource Constraints:** Prioritize MVP features, use modular architecture for easy scaling.
 
-# Appendix  
-[Include any additional information:
-- Research findings
-- Technical specifications]
+# Appendix
+- Research: PDF.js for Angular, SignalR integration with .NET Core and Angular
+- Technical specs: .NET 8+, Angular 17+, SQL Server/PostgreSQL, Azure Blob Storage (optional)
 </PRD>

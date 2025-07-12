@@ -1,0 +1,260 @@
+<context>
+# Overview
+This application is a web-based platform that enables users to browse, view, and interact with a list of PDF documents, as well as send and read messages related to those documents. It is designed for teams, organizations, or individuals who need to manage and discuss documents in a collaborative environment. The solution streamlines document access and communication, improving productivity and knowledge sharing.
+
+# Core Features
+1. **User Authentication**
+   - Secure login and registration for users.
+   - Ensures only authorized access to documents and messages.
+2. **Assessment asignment**
+   - each assessor can receive one or more assignments
+   - each assessment asignment containes one ore more PDF documents
+   - each assessment asignment has a due date, priority and stage
+3. **PDF Document Management**
+   - List available PDF documents.
+   - Preview PDFs in-browser.
+   - Deny download  PDF documents.
+   - (Future) Upload new PDF documents.
+   - (Future)  Only assessors can sign an uploaded  PDF document.
+4. **Messaging System**
+   - Users can write and read messages related to assessments.
+   - Users can write and read messages not related to assessments.
+   - Users can write and read messages related to documents.
+   - Users can write and read messages not related to documents.
+   - (Future) Real-time chat and notifications.
+5. **Responsive UI**
+   - Intuitive navigation for desktop and mobile users.
+
+# User Experience
+**User Personas:**
+- Assessors and their co-workers collaborating on assesments and can view shared documents.
+- Managers reviewing and discussing assignments.
+- Managers can create assessment assignments and upload additional documents.
+
+**Key User Flows:**
+1. User logs in and sees a list of available PDF documents.
+2. User selects a document to preview it in-browser.
+3. User reads and writes messages related to the document.
+4. (Optional) User uploads a new PDF (future enhancement).
+
+**UI/UX Considerations:**
+- Clean, modern interface with clear document previews.
+- Easy access to messaging alongside document view.
+- Mobile-friendly design.
+</context>
+<PRD>
+# Technical Architecture
+**System Components:**
+- .NET Core Web API (backend)
+- Angular SPA (frontend)
+- Database (SQL Server or PostgreSQL)
+- File storage (local or cloud, e.g., Azure Blob Storage)
+
+**Data Models:**
+- User: Id, Username, Email, PasswordHash, etc.
+- Document: Id, Title, FilePath, UploadedBy, UploadDate
+- Message: Id, DocumentId, UserId, Content, Timestamp
+
+**APIs and Integrations:**
+- RESTful endpoints for authentication, document management, and messaging
+- PDF rendering in Angular (PDF.js)
+- (Future) SignalR for real-time messaging
+
+**Infrastructure Requirements:**
+- Hosting for backend and frontend (e.g., Azure App Service)
+- Secure file storage for PDFs
+- Database server
+
+# Development Roadmap
+**MVP Requirements:**
+- User authentication (register, login, JWT-based auth)
+- List and preview PDF documents
+- Basic messaging (send/read messages per document)
+
+**Future Enhancements:**
+- Document upload and management
+- Real-time chat/notifications (SignalR)
+- User roles and permissions
+- Search and filter for documents
+- Audit logs and activity tracking
+
+# Logical Dependency Chain
+1. Set up backend API and database schema
+2. Implement authentication and user management
+3. Develop document listing and preview (PDF rendering)
+4. Add messaging functionality (per document)
+5. Integrate frontend with backend APIs
+6. (Future) Add document upload and real-time features
+
+# Risks and Mitigations
+- **PDF Rendering Issues:** Use established libraries (PDF.js) and test with various PDF files.
+- **Real-time Messaging Complexity:** Start with simple polling, upgrade to SignalR as needed.
+- **File Storage Scalability:** Design for local storage first, plan for cloud migration if usage grows.
+- **Security:** Use secure authentication, validate file uploads, and sanitize user input.
+- **Resource Constraints:** Prioritize MVP features, use modular architecture for easy scaling.
+
+# Appendix
+- Research: PDF.js for Angular, SignalR integration with .NET Core and Angular
+- Technical specs: .NET 8+, Angular 17+, SQL Server/PostgreSQL, Azure Blob Storage (optional)
+
+# Frontend Module Technical Specification (Angular)
+
+## Framework & Tooling
+- Angular 17+
+- TypeScript
+- RxJS for reactive programming
+- Angular Material for UI components (or Bootstrap as alternative)
+- PDF.js for PDF rendering
+- SignalR client (future, for real-time messaging)
+
+## Application Structure
+- `app/`
+  - `core/`: Services (API, Auth, Messaging, Document, Assignment)
+  - `shared/`: Shared components, pipes, directives
+  - `features/`: Feature modules (auth, dashboard, assessments, documents, messaging)
+  - `models/`: TypeScript interfaces for User, Document, Assignment, Message
+  - `environments/`: Environment configs
+
+## Main Components & Pages
+- **Login/Register Page**: User authentication
+- **Dashboard**: Overview of assignments and documents
+- **Assessment List & Detail**: List of assignments, assignment details, due date, priority, stage
+- **Document List & Preview**: List PDFs, preview in-browser (PDF.js), deny download
+- **Messaging**: Threaded messages by assessment, by document, and general
+- **Upload (Future)**: PDF upload form (restricted by role)
+- **PDF Signing (Future)**: UI for assessors to sign PDFs
+
+## Services
+- **AuthService**: Handles login, registration, JWT storage, and user session
+- **ApiService**: Generic HTTP client for backend API
+- **DocumentService**: Fetches document lists, previews, and metadata
+- **AssignmentService**: Manages assessment assignments
+- **MessageService**: Handles messaging (by assessment, by document, general)
+- **SignalRService (Future)**: Real-time updates for chat/messages
+
+## Routing
+- Route guards for authentication and role-based access
+- Lazy loading for feature modules
+
+## State Management
+- Use Angular services and RxJS Subjects/Observables for state
+- (Optional) Use NgRx for complex state if needed
+
+## Security & Access Control
+- JWT token handling in HTTP requests
+- Role-based UI rendering (e.g., only managers see assignment creation)
+- Prevent PDF download via UI and backend enforcement
+
+## UI/UX
+- Responsive design (Angular Material/Bootstrap grid)
+- Accessible components (ARIA, keyboard navigation)
+- Consistent theming and branding
+
+## Testing
+- Unit tests (Jasmine/Karma)
+- E2E tests (Cypress or Protractor)
+
+## Future Enhancements
+- Integrate SignalR for real-time messaging
+- Add PDF upload and signing features
+
+# Backend Module Technical Specification (.NET Core)
+
+## Framework & Tooling
+- .NET 8+ (ASP.NET Core Web API)
+- Entity Framework Core (ORM)
+- AutoMapper for DTO mapping
+- JWT Bearer Authentication
+- SignalR (future, for real-time messaging)
+- Serilog or built-in logging
+
+## Application Structure
+- `Controllers/`: API endpoints (Auth, Users, Assignments, Documents, Messages)
+- `Models/`: Entity models (User, Assignment, Document, Message)
+- `DTOs/`: Data Transfer Objects for API contracts
+- `Services/`: Business logic (AuthService, AssignmentService, DocumentService, MessageService)
+- `Repositories/`: Data access abstraction
+- `Data/`: DbContext and migrations
+- `Helpers/`: Utility classes (e.g., PDF handling, file storage)
+
+## Main Endpoints
+- **AuthController**: Register, login, JWT issuance
+- **UserController**: User profile, role management
+- **AssignmentController**: CRUD for assessment assignments, assign PDFs, set due date/priority/stage
+- **DocumentController**: List, preview, (future) upload, (future) sign, deny download
+- **MessageController**: CRUD for messages (by assessment, by document, general)
+- **SignalR Hub (Future)**: Real-time messaging
+
+## Data Models
+- **User**: Id, Username, Email, PasswordHash, Role, etc.
+- **Assignment**: Id, Title, Description, DueDate, Priority, Stage, AssessorId, List<Document>
+- **Document**: Id, Title, FilePath, UploadedBy, UploadDate, AssignmentId, IsDownloadable, IsSigned
+- **Message**: Id, Content, Timestamp, UserId, AssignmentId (nullable), DocumentId (nullable)
+
+## Security & Access Control
+- JWT authentication for all endpoints
+- Role-based authorization (e.g., only managers can create assignments)
+- File access control (deny download, restrict upload/signing)
+- Input validation and sanitization
+
+## File Storage
+- Store PDFs in local file system or Azure Blob Storage
+- Generate secure, time-limited URLs for preview (no download)
+
+## Messaging
+- Store messages in DB, support threading by assignment/document/general
+- (Future) Integrate SignalR for real-time updates
+
+## Testing
+- Unit tests (xUnit/NUnit)
+- Integration tests for API endpoints
+
+## Logging & Monitoring
+- Structured logging (Serilog or built-in)
+- Exception handling middleware
+- (Optional) Health checks endpoints
+
+## Future Enhancements
+- Add PDF upload and signing endpoints
+- Integrate SignalR for real-time messaging
+- Audit logging for sensitive actions
+
+# Draft API Endpoint Definitions
+
+## AuthController
+- `POST /api/auth/register` — Register a new user
+- `POST /api/auth/login` — Authenticate user and return JWT
+- `GET /api/auth/me` — Get current user profile (JWT required)
+
+## UserController
+- `GET /api/users` — List all users (admin/manager only)
+- `GET /api/users/{id}` — Get user by ID
+- `PUT /api/users/{id}` — Update user profile
+- `DELETE /api/users/{id}` — Delete user (admin only)
+
+## AssignmentController
+- `GET /api/assignments` — List all assignments (filter by user/role)
+- `GET /api/assignments/{id}` — Get assignment details
+- `POST /api/assignments` — Create new assignment (manager only)
+- `PUT /api/assignments/{id}` — Update assignment (manager only)
+- `DELETE /api/assignments/{id}` — Delete assignment (manager only)
+- `POST /api/assignments/{id}/documents` — Attach PDF(s) to assignment
+
+## DocumentController
+- `GET /api/documents` — List all documents (filter by assignment/user)
+- `GET /api/documents/{id}` — Get document metadata
+- `GET /api/documents/{id}/preview` — Get secure preview URL (no download)
+- `POST /api/documents` — Upload new PDF (future, role-restricted)
+- `POST /api/documents/{id}/sign` — Sign PDF (future, assessor only)
+- `DELETE /api/documents/{id}` — Delete document (manager only)
+
+## MessageController
+- `GET /api/messages` — List all messages (filter by assignment/document/general)
+- `GET /api/messages/{id}` — Get message by ID
+- `POST /api/messages` — Create new message (assignment/document/general)
+- `PUT /api/messages/{id}` — Edit message (author only)
+- `DELETE /api/messages/{id}` — Delete message (author or manager)
+
+## SignalR Hub (Future)
+- `/hubs/messages` — Real-time messaging hub for chat/notifications
+</PRD>
