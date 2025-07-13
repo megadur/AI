@@ -1,0 +1,43 @@
+# Task ID: 1
+# Title: Setup Project Infrastructure and Repository
+# Status: in-progress
+# Dependencies: None
+# Priority: high
+# Description: Initialize the multi-module project structure with Spring Boot backend, Angular frontend apps, and PostgreSQL database configuration
+# Details:
+Create a multi-module project structure: 1) Spring Boot backend API module with Maven/Gradle configuration, 2) Three Angular SPA modules (rvGutachten.Web for assessors, rvGutachten.Verw for managers, rvGutachten.Admin for admins), 3) Configure PostgreSQL database connection with application.yml/properties, 4) Setup Docker containers for local development, 5) Configure CORS settings for frontend-backend communication, 6) Setup basic project structure with controllers, services, repositories packages in Spring Boot, 7) Initialize Angular projects with Angular CLI and configure routing modules
+
+# Test Strategy:
+Verify project builds successfully, database connection works, Angular apps serve correctly, and basic health endpoints respond
+
+# Subtasks:
+## 1. Initialize Multi-Module Project Structure [in-progress]
+### Dependencies: None
+### Description: Create the root project structure with Maven/Gradle configuration for multi-module setup including Spring Boot backend and three Angular frontend modules
+### Details:
+Create root directory with Maven/Gradle multi-module configuration. Initialize Spring Boot backend module (rvGutachten-backend) with Maven/Gradle build file, basic package structure (controllers, services, repositories), and Spring Boot starter dependencies. Create three Angular modules using Angular CLI: rvGutachten.Web (assessors), rvGutachten.Verw (managers), rvGutachten.Admin (admins). Configure each Angular project with basic routing modules and shared component structure. Setup .gitignore files for each module.
+
+## 2. Configure PostgreSQL Database Connection [pending]
+### Dependencies: 1.1
+### Description: Setup PostgreSQL database configuration in Spring Boot application with connection properties and basic JPA configuration
+### Details:
+Configure application.yml/application.properties with PostgreSQL connection settings (URL, username, password, driver). Add JPA/Hibernate dependencies to Spring Boot module. Configure JPA properties for DDL auto-generation, SQL logging, and dialect. Create basic DataSource configuration class if needed. Setup database connection pooling with HikariCP. Configure different profiles for development, testing, and production environments.
+
+## 3. Setup Docker Development Environment [pending]
+### Dependencies: 1.2
+### Description: Create Docker containers for PostgreSQL database and configure Docker Compose for local development environment
+### Details:
+Create docker-compose.yml file with PostgreSQL service configuration including environment variables, port mapping, and volume mounting for data persistence. Add pgAdmin service for database management. Create Dockerfile for Spring Boot application with multi-stage build. Configure Docker networking for service communication. Add Docker ignore files and environment-specific configurations. Create startup scripts for easy development environment setup.
+
+## 4. Configure CORS and API Communication Setup [pending]
+### Dependencies: 1.3
+### Description: Setup CORS configuration in Spring Boot backend and configure Angular applications for API communication
+### Details:
+Configure CORS settings in Spring Boot using @CrossOrigin annotations or WebMvcConfigurer for allowed origins, methods, and headers. Create API base configuration in Angular applications with environment-specific API URLs. Setup HTTP interceptors in Angular for common headers and error handling. Configure proxy settings for Angular development servers to handle API calls. Create shared Angular services for HTTP communication patterns.
+
+## 5. Create Basic Project Structure and Health Endpoints [pending]
+### Dependencies: 1.4
+### Description: Implement basic package structure in Spring Boot with sample controllers and create health check endpoints for system verification
+### Details:
+Create package structure: controllers, services, repositories, entities, config, dto packages in Spring Boot. Implement basic HealthController with /api/health endpoint returning system status. Create sample controllers for each main entity (User, Assignment, Document) with basic GET endpoints. Add Spring Boot Actuator for additional health and monitoring endpoints. Create basic Angular components and services structure in all three frontend applications. Implement basic routing configuration in Angular apps.
+

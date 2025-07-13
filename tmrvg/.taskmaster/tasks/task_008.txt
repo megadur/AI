@@ -1,0 +1,11 @@
+# Task ID: 8
+# Title: Implement Real-time Notifications System
+# Status: pending
+# Dependencies: 7
+# Priority: medium
+# Description: Develop WebSocket-based notification system for new assignments, messages, and document updates
+# Details:
+1) Configure Spring WebSocket support with STOMP protocol, 2) Create NotificationService for managing notification events, 3) Implement WebSocket endpoints for real-time communication, 4) Create notification event types (NEW_ASSIGNMENT, NEW_MESSAGE, DOCUMENT_UPDATE), 5) Add notification persistence for offline users, 6) Implement Angular WebSocket service with reconnection logic, 7) Create notification component with toast/popup display, 8) Add notification preferences and settings, 9) Implement notification sound and visual indicators, 10) Create notification history view
+
+# Test Strategy:
+WebSocket connection tests, notification delivery tests, offline notification tests, real-time update tests, notification UI tests

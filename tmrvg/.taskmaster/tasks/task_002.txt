@@ -1,0 +1,11 @@
+# Task ID: 2
+# Title: Implement User Authentication and Authorization System
+# Status: pending
+# Dependencies: 1
+# Priority: high
+# Description: Develop JWT-based authentication system with role-based access control for assessors, managers, and admins
+# Details:
+1) Create User entity with JPA annotations (id, name, email, password, role enum), 2) Implement UserRepository extending JpaRepository, 3) Create JWT utility class for token generation/validation, 4) Implement AuthController with login/logout endpoints, 5) Create JwtAuthenticationFilter for request interception, 6) Configure Spring Security with JWT authentication, 7) Implement role-based authorization (@PreAuthorize annotations), 8) Create Angular authentication service with HTTP interceptors, 9) Implement login components for all three frontend apps, 10) Add route guards for protected routes
+
+# Test Strategy:
+Unit tests for JWT utilities, integration tests for login endpoints, E2E tests for authentication flow, verify role-based access restrictions work correctly

@@ -1,0 +1,142 @@
+{
+  "master": {
+    "tasks": [
+      {
+        "id": 1,
+        "title": "Setup Backend Project Structure",
+        "description": "Initialize the .NET Core Web API project with the required structure, dependencies, and database connection.",
+        "details": "Create a new .NET 8 Web API project with the following structure:\n- Controllers/\n- Models/\n- DTOs/\n- Services/\n- Repositories/\n- Data/\n- Helpers/\n\nInstall required NuGet packages:\n- Microsoft.EntityFrameworkCore\n- Microsoft.EntityFrameworkCore.SqlServer or Npgsql.EntityFrameworkCore.PostgreSQL\n- Microsoft.AspNetCore.Authentication.JwtBearer\n- AutoMapper.Extensions.Microsoft.DependencyInjection\n- Serilog\n\nCreate the ApplicationDbContext class and configure the database connection in appsettings.json. Set up dependency injection in Program.cs for services and repositories.",
+        "testStrategy": "Verify project builds successfully. Test database connection by running migrations. Ensure all dependencies are correctly registered in the DI container.",
+        "priority": "high",
+        "dependencies": [],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 2,
+        "title": "Implement Data Models and Database Schema",
+        "description": "Define entity models and create database migrations for User, Assignment, Document, and Message entities.",
+        "details": "Create the following entity models in the Models folder:\n\n```csharp\npublic class User\n{\n    public int Id { get; set; }\n    public string Username { get; set; }\n    public string Email { get; set; }\n    public string PasswordHash { get; set; }\n    public string Role { get; set; }\n    // Navigation properties\n    public ICollection<Assignment> Assignments { get; set; }\n    public ICollection<Message> Messages { get; set; }\n}\n\npublic class Assignment\n{\n    public int Id { get; set; }\n    public string Title { get; set; }\n    public string Description { get; set; }\n    public DateTime DueDate { get; set; }\n    public string Priority { get; set; }\n    public string Stage { get; set; }\n    public int AssessorId { get; set; }\n    // Navigation properties\n    public User Assessor { get; set; }\n    public ICollection<Document> Documents { get; set; }\n    public ICollection<Message> Messages { get; set; }\n}\n\npublic class Document\n{\n    public int Id { get; set; }\n    public string Title { get; set; }\n    public string FilePath { get; set; }\n    public int UploadedById { get; set; }\n    public DateTime UploadDate { get; set; }\n    public int? AssignmentId { get; set; }\n    public bool IsDownloadable { get; set; }\n    public bool IsSigned { get; set; }\n    // Navigation properties\n    public User UploadedBy { get; set; }\n    public Assignment Assignment { get; set; }\n    public ICollection<Message> Messages { get; set; }\n}\n\npublic class Message\n{\n    public int Id { get; set; }\n    public string Content { get; set; }\n    public DateTime Timestamp { get; set; }\n    public int UserId { get; set; }\n    public int? AssignmentId { get; set; }\n    public int? DocumentId { get; set; }\n    // Navigation properties\n    public User User { get; set; }\n    public Assignment Assignment { get; set; }\n    public Document Document { get; set; }\n}\n```\n\nConfigure relationships in ApplicationDbContext. Create and run migrations to set up the database schema.",
+        "testStrategy": "Verify database schema matches the entity models. Test CRUD operations on each entity to ensure relationships are properly configured. Validate constraints and indexes.",
+        "priority": "high",
+        "dependencies": [
+          1
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 3,
+        "title": "Implement User Authentication",
+        "description": "Create authentication services and controllers for user registration, login, and JWT token generation.",
+        "details": "1. Create DTOs for registration and login requests/responses\n2. Implement AuthService with methods for:\n   - RegisterUser(RegisterDto model)\n   - AuthenticateUser(LoginDto model)\n   - GenerateJwtToken(User user)\n\n3. Create AuthController with endpoints:\n   - POST /api/auth/register\n   - POST /api/auth/login\n   - GET /api/auth/me\n\n4. Configure JWT authentication in Program.cs:\n```csharp\nbuilder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)\n    .AddJwtBearer(options => {\n        options.TokenValidationParameters = new TokenValidationParameters\n        {\n            ValidateIssuer = true,\n            ValidateAudience = true,\n            ValidateLifetime = true,\n            ValidateIssuerSigningKey = true,\n            ValidIssuer = configuration[\"Jwt:Issuer\"],\n            ValidAudience = configuration[\"Jwt:Audience\"],\n            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration[\"Jwt:Key\"]))\n        };\n    });\n```\n\n5. Implement password hashing using BCrypt.Net-Next package\n6. Add role-based authorization with policies for different user roles (Assessor, Manager)",
+        "testStrategy": "Unit test AuthService methods with mock repositories. Test registration with valid/invalid data. Test login with correct/incorrect credentials. Verify JWT token generation and validation. Test role-based authorization.",
+        "priority": "high",
+        "dependencies": [
+          2
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 4,
+        "title": "Implement Document Management",
+        "description": "Create services and controllers for document listing, preview, and access control.",
+        "details": "1. Create DocumentService with methods for:\n   - GetDocuments(int? assignmentId, int? userId)\n   - GetDocumentById(int id)\n   - GetSecurePreviewUrl(int id, int userId)\n   - (Future) UploadDocument(DocumentUploadDto model)\n   - (Future) SignDocument(int id, int assessorId)\n\n2. Implement DocumentController with endpoints:\n   - GET /api/documents\n   - GET /api/documents/{id}\n   - GET /api/documents/{id}/preview\n\n3. Create a FileStorageService to handle PDF storage and retrieval:\n```csharp\npublic interface IFileStorageService\n{\n    Task<string> StoreFileAsync(IFormFile file, string containerName);\n    Task<Stream> GetFileAsync(string filePath, string containerName);\n    Task DeleteFileAsync(string filePath, string containerName);\n    string GetSecureUrl(string filePath, TimeSpan expiry);\n}\n```\n\n4. Implement local file system storage initially, with abstraction to allow future Azure Blob Storage implementation\n5. Add logic to prevent document downloads and only allow secure previews\n6. Implement authorization to ensure only authorized users can access documents",
+        "testStrategy": "Unit test DocumentService with mock repositories. Test file storage with sample PDFs. Verify secure URL generation prevents direct downloads. Test authorization rules for document access.",
+        "priority": "high",
+        "dependencies": [
+          3
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 5,
+        "title": "Implement Assignment Management",
+        "description": "Create services and controllers for assessment assignment creation, management, and assignment of documents.",
+        "details": "1. Create AssignmentService with methods for:\n   - GetAssignments(int? userId, string role)\n   - GetAssignmentById(int id)\n   - CreateAssignment(AssignmentCreateDto model)\n   - UpdateAssignment(int id, AssignmentUpdateDto model)\n   - DeleteAssignment(int id)\n   - AddDocumentsToAssignment(int assignmentId, List<int> documentIds)\n\n2. Implement AssignmentController with endpoints:\n   - GET /api/assignments\n   - GET /api/assignments/{id}\n   - POST /api/assignments\n   - PUT /api/assignments/{id}\n   - DELETE /api/assignments/{id}\n   - POST /api/assignments/{id}/documents\n\n3. Create DTOs for assignment creation, update, and responses\n4. Implement authorization to ensure only managers can create/update assignments\n5. Add validation for assignment properties (due date, priority, stage)",
+        "testStrategy": "Unit test AssignmentService with mock repositories. Test CRUD operations with valid/invalid data. Verify authorization rules for managers vs. assessors. Test document assignment functionality.",
+        "priority": "medium",
+        "dependencies": [
+          3,
+          4
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 6,
+        "title": "Implement Messaging System",
+        "description": "Create services and controllers for sending and reading messages related to assignments, documents, or general communication.",
+        "details": "1. Create MessageService with methods for:\n   - GetMessages(int? assignmentId, int? documentId, int? userId)\n   - GetMessageById(int id)\n   - CreateMessage(MessageCreateDto model)\n   - UpdateMessage(int id, MessageUpdateDto model, int userId)\n   - DeleteMessage(int id, int userId, string role)\n\n2. Implement MessageController with endpoints:\n   - GET /api/messages\n   - GET /api/messages/{id}\n   - POST /api/messages\n   - PUT /api/messages/{id}\n   - DELETE /api/messages/{id}\n\n3. Create DTOs for message creation, update, and responses\n4. Implement authorization to ensure users can only edit/delete their own messages (unless they're managers)\n5. Add validation for message content\n6. Implement filtering to retrieve messages by assignment, document, or general (neither assignment nor document)",
+        "testStrategy": "Unit test MessageService with mock repositories. Test CRUD operations with valid/invalid data. Verify authorization rules for message editing/deletion. Test message filtering by assignment/document/general.",
+        "priority": "medium",
+        "dependencies": [
+          3,
+          5
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 7,
+        "title": "Setup Angular Frontend Project",
+        "description": "Initialize the Angular SPA project with the required structure, modules, and dependencies.",
+        "details": "1. Create a new Angular 17+ project using Angular CLI:\n```bash\nng new pdf-document-app --routing --style=scss\n```\n\n2. Install required dependencies:\n```bash\nnpm install @angular/material pdf-js rxjs jwt-decode\n```\n\n3. Set up the application structure:\n```\nsrc/app/\n  ├── core/\n  │   ├── services/\n  │   │   ├── api.service.ts\n  │   │   ├── auth.service.ts\n  │   │   ├── document.service.ts\n  │   │   ├── assignment.service.ts\n  │   │   └── message.service.ts\n  │   ├── guards/\n  │   │   └── auth.guard.ts\n  │   └── interceptors/\n  │       └── jwt.interceptor.ts\n  ├── shared/\n  │   ├── components/\n  │   ├── pipes/\n  │   └── directives/\n  ├── features/\n  │   ├── auth/\n  │   ├── dashboard/\n  │   ├── assignments/\n  │   ├── documents/\n  │   └── messaging/\n  ├── models/\n  │   ├── user.model.ts\n  │   ├── document.model.ts\n  │   ├── assignment.model.ts\n  │   └── message.model.ts\n  └── environments/\n```\n\n4. Configure Angular Material\n5. Set up routing module with lazy loading for feature modules\n6. Implement JWT interceptor for adding auth tokens to API requests\n7. Create environment files for development and production",
+        "testStrategy": "Verify project builds successfully. Test routing configuration. Ensure lazy loading works correctly. Verify JWT interceptor adds tokens to requests.",
+        "priority": "high",
+        "dependencies": [],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 8,
+        "title": "Implement Authentication UI",
+        "description": "Create login and registration components and integrate with the backend authentication API.",
+        "details": "1. Create AuthModule with components:\n   - LoginComponent\n   - RegisterComponent\n\n2. Implement AuthService in the core module:\n```typescript\n@Injectable({\n  providedIn: 'root'\n})\nexport class AuthService {\n  private currentUserSubject = new BehaviorSubject<User | null>(null);\n  public currentUser$ = this.currentUserSubject.asObservable();\n\n  constructor(private apiService: ApiService, private router: Router) {\n    // Load user from localStorage on init\n    const storedUser = localStorage.getItem('currentUser');\n    if (storedUser) {\n      this.currentUserSubject.next(JSON.parse(storedUser));\n    }\n  }\n\n  login(credentials: { email: string; password: string }): Observable<User> {\n    return this.apiService.post<any>('/auth/login', credentials)\n      .pipe(\n        map(response => {\n          const user = response.user;\n          user.token = response.token;\n          localStorage.setItem('currentUser', JSON.stringify(user));\n          this.currentUserSubject.next(user);\n          return user;\n        })\n      );\n  }\n\n  register(user: { username: string; email: string; password: string }): Observable<User> {\n    return this.apiService.post<User>('/auth/register', user);\n  }\n\n  logout(): void {\n    localStorage.removeItem('currentUser');\n    this.currentUserSubject.next(null);\n    this.router.navigate(['/login']);\n  }\n\n  get currentUserValue(): User | null {\n    return this.currentUserSubject.value;\n  }\n\n  isLoggedIn(): boolean {\n    return !!this.currentUserValue;\n  }\n}\n```\n\n3. Create login form with validation\n4. Create registration form with validation\n5. Implement AuthGuard for protected routes\n6. Add JWT token handling and storage\n7. Create user profile component for viewing current user details",
+        "testStrategy": "Unit test AuthService methods. Test login/register forms with valid/invalid data. Verify token storage and retrieval. Test AuthGuard with authenticated/unauthenticated users.",
+        "priority": "high",
+        "dependencies": [
+          7
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 9,
+        "title": "Implement Document Viewing UI",
+        "description": "Create components for listing and previewing PDF documents using PDF.js.",
+        "details": "1. Create DocumentsModule with components:\n   - DocumentListComponent\n   - DocumentPreviewComponent\n\n2. Implement DocumentService in the core module:\n```typescript\n@Injectable({\n  providedIn: 'root'\n})\nexport class DocumentService {\n  constructor(private apiService: ApiService) {}\n\n  getDocuments(assignmentId?: number): Observable<Document[]> {\n    let params = new HttpParams();\n    if (assignmentId) {\n      params = params.set('assignmentId', assignmentId.toString());\n    }\n    return this.apiService.get<Document[]>('/documents', { params });\n  }\n\n  getDocument(id: number): Observable<Document> {\n    return this.apiService.get<Document>(`/documents/${id}`);\n  }\n\n  getPreviewUrl(id: number): Observable<{ url: string }> {\n    return this.apiService.get<{ url: string }>(`/documents/${id}/preview`);\n  }\n}\n```\n\n3. Create document list component with filtering options\n4. Implement PDF.js for in-browser PDF rendering:\n```typescript\nimport * as pdfjsLib from 'pdfjs-dist';\n\n@Component({\n  selector: 'app-document-preview',\n  templateUrl: './document-preview.component.html',\n  styleUrls: ['./document-preview.component.scss']\n})\nexport class DocumentPreviewComponent implements OnInit, OnDestroy {\n  @Input() documentId: number;\n  document: Document;\n  pdfDocument: any;\n  currentPage = 1;\n  totalPages = 0;\n  isLoading = true;\n  error: string | null = null;\n\n  constructor(private documentService: DocumentService) {}\n\n  ngOnInit(): void {\n    this.loadDocument();\n  }\n\n  loadDocument(): void {\n    this.documentService.getDocument(this.documentId).subscribe(\n      document => {\n        this.document = document;\n        this.loadPdf();\n      },\n      error => {\n        this.error = 'Failed to load document';\n        this.isLoading = false;\n      }\n    );\n  }\n\n  loadPdf(): void {\n    this.documentService.getPreviewUrl(this.documentId).subscribe(\n      response => {\n        pdfjsLib.getDocument(response.url).promise.then(\n          pdf => {\n            this.pdfDocument = pdf;\n            this.totalPages = pdf.numPages;\n            this.renderPage(this.currentPage);\n            this.isLoading = false;\n          }\n        ).catch(error => {\n          this.error = 'Failed to load PDF';\n          this.isLoading = false;\n        });\n      },\n      error => {\n        this.error = 'Failed to get preview URL';\n        this.isLoading = false;\n      }\n    );\n  }\n\n  renderPage(pageNumber: number): void {\n    this.isLoading = true;\n    this.pdfDocument.getPage(pageNumber).then(page => {\n      const canvas = document.getElementById('pdf-canvas') as HTMLCanvasElement;\n      const context = canvas.getContext('2d');\n      const viewport = page.getViewport({ scale: 1.5 });\n      \n      canvas.height = viewport.height;\n      canvas.width = viewport.width;\n      \n      page.render({\n        canvasContext: context,\n        viewport: viewport\n      }).promise.then(() => {\n        this.isLoading = false;\n      });\n    });\n  }\n\n  nextPage(): void {\n    if (this.currentPage < this.totalPages) {\n      this.currentPage++;\n      this.renderPage(this.currentPage);\n    }\n  }\n\n  prevPage(): void {\n    if (this.currentPage > 1) {\n      this.currentPage--;\n      this.renderPage(this.currentPage);\n    }\n  }\n\n  ngOnDestroy(): void {\n    if (this.pdfDocument) {\n      this.pdfDocument.destroy();\n    }\n  }\n}\n```\n\n5. Implement document preview component with navigation controls\n6. Add security measures to prevent PDF downloads\n7. Create responsive layout for document viewing",
+        "testStrategy": "Unit test DocumentService methods. Test PDF rendering with various document types. Verify download prevention works correctly. Test responsive layout on different screen sizes.",
+        "priority": "high",
+        "dependencies": [
+          7,
+          8
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 10,
+        "title": "Implement Assignment and Messaging UI",
+        "description": "Create components for managing assignments and sending/reading messages related to assignments and documents.",
+        "details": "1. Create AssignmentsModule with components:\n   - AssignmentListComponent\n   - AssignmentDetailComponent\n   - AssignmentFormComponent (for managers)\n\n2. Create MessagingModule with components:\n   - MessageListComponent\n   - MessageFormComponent\n\n3. Implement AssignmentService in the core module:\n```typescript\n@Injectable({\n  providedIn: 'root'\n})\nexport class AssignmentService {\n  constructor(private apiService: ApiService) {}\n\n  getAssignments(): Observable<Assignment[]> {\n    return this.apiService.get<Assignment[]>('/assignments');\n  }\n\n  getAssignment(id: number): Observable<Assignment> {\n    return this.apiService.get<Assignment>(`/assignments/${id}`);\n  }\n\n  createAssignment(assignment: AssignmentCreate): Observable<Assignment> {\n    return this.apiService.post<Assignment>('/assignments', assignment);\n  }\n\n  updateAssignment(id: number, assignment: AssignmentUpdate): Observable<Assignment> {\n    return this.apiService.put<Assignment>(`/assignments/${id}`, assignment);\n  }\n\n  deleteAssignment(id: number): Observable<void> {\n    return this.apiService.delete<void>(`/assignments/${id}`);\n  }\n\n  addDocumentsToAssignment(assignmentId: number, documentIds: number[]): Observable<void> {\n    return this.apiService.post<void>(`/assignments/${assignmentId}/documents`, { documentIds });\n  }\n}\n```\n\n4. Implement MessageService in the core module:\n```typescript\n@Injectable({\n  providedIn: 'root'\n})\nexport class MessageService {\n  constructor(private apiService: ApiService) {}\n\n  getMessages(assignmentId?: number, documentId?: number): Observable<Message[]> {\n    let params = new HttpParams();\n    if (assignmentId) {\n      params = params.set('assignmentId', assignmentId.toString());\n    }\n    if (documentId) {\n      params = params.set('documentId', documentId.toString());\n    }\n    return this.apiService.get<Message[]>('/messages', { params });\n  }\n\n  getMessage(id: number): Observable<Message> {\n    return this.apiService.get<Message>(`/messages/${id}`);\n  }\n\n  createMessage(message: MessageCreate): Observable<Message> {\n    return this.apiService.post<Message>('/messages', message);\n  }\n\n  updateMessage(id: number, message: MessageUpdate): Observable<Message> {\n    return this.apiService.put<Message>(`/messages/${id}`, message);\n  }\n\n  deleteMessage(id: number): Observable<void> {\n    return this.apiService.delete<void>(`/messages/${id}`);\n  }\n}\n```\n\n5. Create assignment list with filtering and sorting\n6. Implement assignment detail view with document list\n7. Create assignment form for managers (create/edit)\n8. Implement message list component with threading by assignment/document\n9. Create message form for sending new messages\n10. Add role-based UI elements (e.g., only show assignment creation for managers)\n11. Implement responsive design for all components",
+        "testStrategy": "Unit test AssignmentService and MessageService methods. Test assignment creation/editing with valid/invalid data. Verify message threading works correctly. Test role-based UI elements with different user roles. Test responsive layout on different screen sizes.",
+        "priority": "medium",
+        "dependencies": [
+          7,
+          8,
+          9
+        ],
+        "status": "pending",
+        "subtasks": []
+      }
+    ],
+    "metadata": {
+      "created": "2025-07-13T08:40:50.405Z",
+      "updated": "2025-07-13T08:40:50.405Z",
+      "description": "Tasks for master context"
+    }
+  }
+}

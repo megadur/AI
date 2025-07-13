@@ -1,0 +1,193 @@
+{
+  "master": {
+    "tasks": [
+      {
+        "id": 1,
+        "title": "Setup Project Infrastructure and Repository",
+        "description": "Initialize the multi-module project structure with Spring Boot backend, Angular frontend apps, and PostgreSQL database configuration",
+        "details": "Create a multi-module project structure: 1) Spring Boot backend API module with Maven/Gradle configuration, 2) Three Angular SPA modules (rvGutachten.Web for assessors, rvGutachten.Verw for managers, rvGutachten.Admin for admins), 3) Configure PostgreSQL database connection with application.yml/properties, 4) Setup Docker containers for local development, 5) Configure CORS settings for frontend-backend communication, 6) Setup basic project structure with controllers, services, repositories packages in Spring Boot, 7) Initialize Angular projects with Angular CLI and configure routing modules",
+        "testStrategy": "Verify project builds successfully, database connection works, Angular apps serve correctly, and basic health endpoints respond",
+        "priority": "high",
+        "dependencies": [],
+        "status": "in-progress",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Initialize Multi-Module Project Structure",
+            "description": "Create the root project structure with Maven/Gradle configuration for multi-module setup including Spring Boot backend and three Angular frontend modules",
+            "dependencies": [],
+            "details": "Create root directory with Maven/Gradle multi-module configuration. Initialize Spring Boot backend module (rvGutachten-backend) with Maven/Gradle build file, basic package structure (controllers, services, repositories), and Spring Boot starter dependencies. Create three Angular modules using Angular CLI: rvGutachten.Web (assessors), rvGutachten.Verw (managers), rvGutachten.Admin (admins). Configure each Angular project with basic routing modules and shared component structure. Setup .gitignore files for each module.",
+            "status": "in-progress",
+            "testStrategy": "Verify all modules build successfully, Maven/Gradle commands execute without errors, Angular CLI serves all three applications on different ports"
+          },
+          {
+            "id": 2,
+            "title": "Configure PostgreSQL Database Connection",
+            "description": "Setup PostgreSQL database configuration in Spring Boot application with connection properties and basic JPA configuration",
+            "dependencies": [
+              1
+            ],
+            "details": "Configure application.yml/application.properties with PostgreSQL connection settings (URL, username, password, driver). Add JPA/Hibernate dependencies to Spring Boot module. Configure JPA properties for DDL auto-generation, SQL logging, and dialect. Create basic DataSource configuration class if needed. Setup database connection pooling with HikariCP. Configure different profiles for development, testing, and production environments.",
+            "status": "pending",
+            "testStrategy": "Test database connectivity on application startup, verify JPA configuration loads correctly, test connection pooling works under load"
+          },
+          {
+            "id": 3,
+            "title": "Setup Docker Development Environment",
+            "description": "Create Docker containers for PostgreSQL database and configure Docker Compose for local development environment",
+            "dependencies": [
+              2
+            ],
+            "details": "Create docker-compose.yml file with PostgreSQL service configuration including environment variables, port mapping, and volume mounting for data persistence. Add pgAdmin service for database management. Create Dockerfile for Spring Boot application with multi-stage build. Configure Docker networking for service communication. Add Docker ignore files and environment-specific configurations. Create startup scripts for easy development environment setup.",
+            "status": "pending",
+            "testStrategy": "Verify Docker containers start successfully, database is accessible from host and Spring Boot application, pgAdmin connects to database, application can connect to containerized PostgreSQL"
+          },
+          {
+            "id": 4,
+            "title": "Configure CORS and API Communication Setup",
+            "description": "Setup CORS configuration in Spring Boot backend and configure Angular applications for API communication",
+            "dependencies": [
+              3
+            ],
+            "details": "Configure CORS settings in Spring Boot using @CrossOrigin annotations or WebMvcConfigurer for allowed origins, methods, and headers. Create API base configuration in Angular applications with environment-specific API URLs. Setup HTTP interceptors in Angular for common headers and error handling. Configure proxy settings for Angular development servers to handle API calls. Create shared Angular services for HTTP communication patterns.",
+            "status": "pending",
+            "testStrategy": "Test CORS preflight requests work correctly, verify Angular applications can make API calls to Spring Boot backend, test different HTTP methods are allowed, verify error handling works"
+          },
+          {
+            "id": 5,
+            "title": "Create Basic Project Structure and Health Endpoints",
+            "description": "Implement basic package structure in Spring Boot with sample controllers and create health check endpoints for system verification",
+            "dependencies": [
+              4
+            ],
+            "details": "Create package structure: controllers, services, repositories, entities, config, dto packages in Spring Boot. Implement basic HealthController with /api/health endpoint returning system status. Create sample controllers for each main entity (User, Assignment, Document) with basic GET endpoints. Add Spring Boot Actuator for additional health and monitoring endpoints. Create basic Angular components and services structure in all three frontend applications. Implement basic routing configuration in Angular apps.",
+            "status": "pending",
+            "testStrategy": "Verify health endpoints return 200 status, test basic API endpoints respond correctly, confirm Angular applications load and navigate properly, validate project structure follows best practices"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Implement User Authentication and Authorization System",
+        "description": "Develop JWT-based authentication system with role-based access control for assessors, managers, and admins",
+        "details": "1) Create User entity with JPA annotations (id, name, email, password, role enum), 2) Implement UserRepository extending JpaRepository, 3) Create JWT utility class for token generation/validation, 4) Implement AuthController with login/logout endpoints, 5) Create JwtAuthenticationFilter for request interception, 6) Configure Spring Security with JWT authentication, 7) Implement role-based authorization (@PreAuthorize annotations), 8) Create Angular authentication service with HTTP interceptors, 9) Implement login components for all three frontend apps, 10) Add route guards for protected routes",
+        "testStrategy": "Unit tests for JWT utilities, integration tests for login endpoints, E2E tests for authentication flow, verify role-based access restrictions work correctly",
+        "priority": "high",
+        "dependencies": [
+          1
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 3,
+        "title": "Design and Implement Database Schema",
+        "description": "Create PostgreSQL database schema for assignments, documents, messages, and users with proper relationships and constraints",
+        "details": "1) Create Assignment entity (id, title, status enum, assessorId FK, createdAt, updatedAt), 2) Create Document entity (id, assignmentId FK, fileName, fileUrl, fileSize, uploadedAt, metadata JSON), 3) Create Message entity (id, senderId FK, recipientId FK, assignmentId FK nullable, documentId FK nullable, content, timestamp, isRead), 4) Define proper JPA relationships (@OneToMany, @ManyToOne), 5) Create database migration scripts using Flyway, 6) Add database indexes for performance (user queries, assignment lookups), 7) Implement soft delete functionality where needed, 8) Create repository interfaces for all entities",
+        "testStrategy": "Database migration tests, repository integration tests, verify foreign key constraints, test data integrity and cascade operations",
+        "priority": "high",
+        "dependencies": [
+          2
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 4,
+        "title": "Implement Assignment Management System",
+        "description": "Develop backend APIs and frontend components for assignment listing, tracking, and status management",
+        "details": "1) Create AssignmentService with methods for CRUD operations, 2) Implement AssignmentController with REST endpoints (/api/assignments GET, POST, PUT, DELETE), 3) Add assignment status tracking (PENDING, ACCEPTED, IN_PROGRESS, COMPLETED), 4) Create AssignmentDTO classes for API responses, 5) Implement assignment listing with pagination and filtering, 6) Create Angular assignment service with HTTP client methods, 7) Build assignment list component with status indicators, 8) Implement assignment detail view component, 9) Add assignment status update functionality, 10) Create dashboard component showing assignment statistics",
+        "testStrategy": "Unit tests for service layer, integration tests for REST endpoints, frontend component tests, E2E tests for assignment workflows",
+        "priority": "medium",
+        "dependencies": [
+          3
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 5,
+        "title": "Implement File Storage and Document Management",
+        "description": "Set up file storage system for PDF documents with upload, retrieval, and metadata management capabilities",
+        "details": "1) Configure file storage (local filesystem or Azure Blob Storage), 2) Create DocumentService for file operations (upload, download, delete), 3) Implement DocumentController with endpoints for file operations, 4) Add file validation (PDF format, size limits), 5) Create secure file serving with access control, 6) Implement document metadata extraction, 7) Create Angular file upload service with progress tracking, 8) Build document list component with thumbnails, 9) Implement document upload component with drag-drop, 10) Add document deletion functionality with confirmation",
+        "testStrategy": "File upload/download tests, security access tests, file validation tests, storage integration tests, frontend upload component tests",
+        "priority": "medium",
+        "dependencies": [
+          4
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 6,
+        "title": "Integrate PDF.js for Document Viewing",
+        "description": "Implement in-browser PDF viewing capabilities using PDF.js library with navigation and zoom controls",
+        "details": "1) Install PDF.js library in Angular projects, 2) Create PDF viewer component with PDF.js integration, 3) Implement PDF navigation controls (page up/down, zoom in/out), 4) Add PDF search functionality within documents, 5) Create PDF toolbar with common actions, 6) Implement responsive PDF viewing for different screen sizes, 7) Add loading states and error handling for PDF rendering, 8) Create PDF metadata display (page count, file size), 9) Implement PDF printing functionality, 10) Add keyboard shortcuts for PDF navigation",
+        "testStrategy": "PDF rendering tests with various file sizes, browser compatibility tests, responsive design tests, performance tests for large PDFs",
+        "priority": "medium",
+        "dependencies": [
+          5
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 7,
+        "title": "Develop Messaging System",
+        "description": "Create messaging functionality for document-related and general communications between users",
+        "details": "1) Create MessageService with CRUD operations and message threading, 2) Implement MessageController with REST endpoints for sending/receiving messages, 3) Add message filtering by assignment/document context, 4) Create message thread grouping logic, 5) Implement message read/unread status tracking, 6) Create Angular messaging service with real-time updates, 7) Build message list component with thread view, 8) Implement message composition component with rich text editor, 9) Add message search and filtering capabilities, 10) Create message notification badges and counters",
+        "testStrategy": "Message CRUD operation tests, thread grouping tests, real-time messaging tests, message filtering tests, frontend messaging component tests",
+        "priority": "medium",
+        "dependencies": [
+          6
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 8,
+        "title": "Implement Real-time Notifications System",
+        "description": "Develop WebSocket-based notification system for new assignments, messages, and document updates",
+        "details": "1) Configure Spring WebSocket support with STOMP protocol, 2) Create NotificationService for managing notification events, 3) Implement WebSocket endpoints for real-time communication, 4) Create notification event types (NEW_ASSIGNMENT, NEW_MESSAGE, DOCUMENT_UPDATE), 5) Add notification persistence for offline users, 6) Implement Angular WebSocket service with reconnection logic, 7) Create notification component with toast/popup display, 8) Add notification preferences and settings, 9) Implement notification sound and visual indicators, 10) Create notification history view",
+        "testStrategy": "WebSocket connection tests, notification delivery tests, offline notification tests, real-time update tests, notification UI tests",
+        "priority": "medium",
+        "dependencies": [
+          7
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 9,
+        "title": "Build Assessment Upload and Digital Signature System",
+        "description": "Implement functionality for assessors to upload completed assessments as PDFs and apply digital signatures",
+        "details": "1) Create AssessmentUploadService for handling assessment submissions, 2) Implement digital signature functionality using PDF signing libraries, 3) Create assessment upload endpoints with validation, 4) Add assessment status tracking (DRAFT, SUBMITTED, SIGNED), 5) Implement assessment versioning system, 6) Create Angular assessment upload component with signature pad, 7) Build assessment review interface before submission, 8) Add assessment submission confirmation workflow, 9) Implement assessment download for signed documents, 10) Create assessment audit trail logging",
+        "testStrategy": "Assessment upload tests, digital signature validation tests, version control tests, submission workflow tests, audit trail verification",
+        "priority": "medium",
+        "dependencies": [
+          8
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 10,
+        "title": "Develop Role-Specific Dashboards and Admin Features",
+        "description": "Create specialized dashboards and administrative features for assessors, managers, and admins with appropriate access controls",
+        "details": "1) Create assessor dashboard with assignment overview and statistics, 2) Build manager dashboard with team assignment tracking, 3) Implement admin dashboard with user management capabilities, 4) Create user CRUD operations for admin role, 5) Add assignment creation/management for managers, 6) Implement role-based menu and feature visibility, 7) Create analytics components for each dashboard, 8) Add export functionality for reports, 9) Implement user activity logging and monitoring, 10) Create system configuration management for admins",
+        "testStrategy": "Role-based access tests, dashboard functionality tests, user management tests, analytics accuracy tests, export functionality tests",
+        "priority": "low",
+        "dependencies": [
+          9
+        ],
+        "status": "pending",
+        "subtasks": []
+      }
+    ],
+    "metadata": {
+      "created": "2025-07-13T09:07:50.339Z",
+      "updated": "2025-07-13T09:11:37.047Z",
+      "description": "Tasks for master context"
+    }
+  }
+}
