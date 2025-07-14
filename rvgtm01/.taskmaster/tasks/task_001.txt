@@ -1,0 +1,43 @@
+# Task ID: 1
+# Title: Setup Project Infrastructure and Database Schema
+# Status: in-progress
+# Dependencies: None
+# Priority: high
+# Description: Initialize the project structure and create the database schema for managing Gutachtenaufträge with proper user roles and authentication
+# Details:
+Set up a modern web application framework (e.g., Node.js with Express or Django). Create database tables for: users (rvPuR, rvGutachten, Gutachter), orders (rvPuR-Auftrag, rvSMD-Auftrag), documents, notifications, communications, and audit logs. Implement role-based authentication and authorization middleware. Use PostgreSQL or similar RDBMS for data persistence. Set up environment configuration for development, testing, and production.
+
+# Test Strategy:
+Unit tests for database models and migrations. Integration tests for authentication middleware. Verify all user roles can be created and authenticated properly.
+
+# Subtasks:
+## 1. Initialize Project Structure and Framework Setup [pending]
+### Dependencies: None
+### Description: Set up the foundational project structure with a modern web application framework and essential development tools
+### Details:
+Create a new Node.js project with Express.js framework. Initialize package.json with essential dependencies including express, cors, helmet, dotenv, bcryptjs, jsonwebtoken, and development tools like nodemon, jest, and eslint. Set up folder structure with directories for routes, controllers, models, middleware, config, tests, and utils. Configure TypeScript if using TS. Set up Git repository with appropriate .gitignore file. Create basic server.js/app.js entry point with middleware configuration.
+
+## 2. Configure Database Connection and Environment Setup [pending]
+### Dependencies: 1.1
+### Description: Establish PostgreSQL database connection and configure environment variables for different deployment stages
+### Details:
+Install and configure PostgreSQL database driver (pg for Node.js). Create database connection configuration with connection pooling. Set up environment configuration files (.env.development, .env.test, .env.production) with database credentials, JWT secrets, and other environment-specific variables. Create database configuration module that handles connection management and error handling. Implement database health check endpoint. Set up database migration framework (e.g., Knex.js migrations or Sequelize migrations).
+
+## 3. Design and Create Core Database Schema [pending]
+### Dependencies: 1.2
+### Description: Create comprehensive database tables for users, orders, documents, and system entities with proper relationships
+### Details:
+Create migration files for core tables: users table with role field (rvPuR, rvGutachten, Gutachter), user_profiles for extended user information, orders table for rvPuR-Auftrag and rvSMD-Auftrag with status tracking, documents table for file management with metadata, notifications table for system messages, communications table for user interactions, and audit_logs table for system tracking. Define proper foreign key relationships, indexes for performance, and constraints for data integrity. Include timestamps (created_at, updated_at) for all tables.
+
+## 4. Implement User Authentication and Session Management [pending]
+### Dependencies: 1.3
+### Description: Create user registration, login, and JWT-based authentication system with secure session handling
+### Details:
+Implement user registration endpoint with password hashing using bcryptjs. Create login endpoint that validates credentials and returns JWT tokens. Set up JWT token generation and validation middleware. Implement password reset functionality with secure token generation. Create user profile management endpoints. Add session management with refresh token capability. Implement logout functionality that invalidates tokens. Add rate limiting for authentication endpoints to prevent brute force attacks.
+
+## 5. Develop Role-Based Authorization Middleware [pending]
+### Dependencies: 1.4
+### Description: Create comprehensive authorization system that enforces role-based access control across all application endpoints
+### Details:
+Create authorization middleware that checks user roles and permissions for each endpoint. Implement role-based access control (RBAC) with predefined roles: rvPuR (order creation), rvGutachten (order management), and Gutachter (order fulfillment). Create permission matrix defining what each role can access. Implement route protection middleware that can be applied to specific endpoints. Add user context injection into request objects. Create admin role management functionality for user role assignment. Implement audit logging for authorization decisions.
+

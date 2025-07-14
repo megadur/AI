@@ -1,0 +1,109 @@
+{
+	"meta": {
+		"generatedAt": "2025-07-14T16:53:56.252Z",
+		"tasksAnalyzed": 12,
+		"totalTasks": 12,
+		"analysisCount": 12,
+		"thresholdScore": 5,
+		"projectName": "Taskmaster",
+		"usedResearch": false
+	},
+	"complexityAnalysis": [
+		{
+			"taskId": 2,
+			"taskTitle": "Implement User Management and Role-Based Access Control",
+			"complexityScore": 8,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Break down the user management and role-based access control implementation into focused subtasks covering JWT authentication setup, user registration/login endpoints, role-based middleware, profile management, session handling, and admin interface development. Each subtask should be independently testable and deliverable.",
+			"reasoning": "High complexity due to security requirements, multiple authentication mechanisms, role-based permissions, and admin functionality. Critical foundation task requiring careful implementation of security best practices."
+		},
+		{
+			"taskId": 3,
+			"taskTitle": "Develop Order Creation and Management System",
+			"complexityScore": 7,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "Decompose the order management system into subtasks for REST API development, dual order creation logic, Gutachter selection interface, status tracking implementation, and order listing/filtering functionality. Focus on the core business logic and API design patterns.",
+			"reasoning": "Moderate-high complexity involving core business logic, dual order creation, API design, and user interface components. Central to the application's primary functionality."
+		},
+		{
+			"taskId": 4,
+			"taskTitle": "Implement Document Management and Merging System",
+			"complexityScore": 6,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Split document management into subtasks for file upload handling, document merging service implementation, storage solution setup, and document access control. Address different file formats and security considerations separately.",
+			"reasoning": "Medium complexity with file handling, format conversion, storage management, and security concerns. Requires integration with external libraries and storage solutions."
+		},
+		{
+			"taskId": 5,
+			"taskTitle": "Build Notification and Communication System",
+			"complexityScore": 6,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Break down notification system into subtasks for email service setup, automated notification triggers, in-app messaging implementation, and real-time notification delivery. Consider different notification channels and delivery mechanisms.",
+			"reasoning": "Medium complexity involving multiple communication channels, real-time features, and integration with external email services. Requires careful handling of notification preferences and delivery tracking."
+		},
+		{
+			"taskId": 6,
+			"taskTitle": "Develop Deadline Management and Reminder System",
+			"complexityScore": 7,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "Decompose deadline management into subtasks for deadline calculation service, automated reminder scheduling, Mahnwesen escalation system, calendar integration, and dashboard visualization. Focus on time-based processing and automation.",
+			"reasoning": "Moderate-high complexity due to time-based automation, escalation logic, calendar integration, and scheduled job management. Critical for business process compliance."
+		},
+		{
+			"taskId": 7,
+			"taskTitle": "Create Gutachten Submission and Digital Signature System",
+			"complexityScore": 8,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "Break down the submission system into subtasks for submission interface development, digital signature integration, validation and completeness checks, version control implementation, and compliance verification. Address legal and technical requirements separately.",
+			"reasoning": "High complexity involving digital signatures, legal compliance, file validation, and version control. Requires integration with external signature services and adherence to regulatory standards."
+		},
+		{
+			"taskId": 8,
+			"taskTitle": "Implement Order Cancellation and Visibility Management",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Split cancellation management into subtasks for cancellation workflow implementation, visibility timer and soft delete functionality, and automated cleanup service. Focus on data lifecycle management and scheduled operations.",
+			"reasoning": "Medium complexity with straightforward business logic but requiring careful handling of data lifecycle, soft deletes, and scheduled cleanup processes."
+		},
+		{
+			"taskId": 9,
+			"taskTitle": "Develop Billing and Invoice Management System",
+			"complexityScore": 6,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Decompose billing system into subtasks for invoice submission interface, approval workflow implementation, PDF generation service, and reporting dashboard. Address financial data handling and integration requirements.",
+			"reasoning": "Medium complexity involving financial data, approval workflows, PDF generation, and potential accounting system integration. Requires careful validation and audit trail implementation."
+		},
+		{
+			"taskId": 10,
+			"taskTitle": "Implement Stellungnahme (Statement) Request System",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down the statement request system into subtasks for request interface and workflow, notification and response handling, and integration with main Gutachten process. Focus on request-response tracking and workflow integration.",
+			"reasoning": "Medium complexity with straightforward request-response workflow but requiring integration with existing notification system and main business process."
+		},
+		{
+			"taskId": 11,
+			"taskTitle": "Build Comprehensive Audit Trail and Logging System",
+			"complexityScore": 6,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Split audit system into subtasks for logging framework setup, audit trail data model, administrative interface development, and compliance reporting. Address different logging levels and retention requirements.",
+			"reasoning": "Medium complexity requiring systematic approach to logging, data retention, search capabilities, and compliance reporting. Important for regulatory compliance and system monitoring."
+		},
+		{
+			"taskId": 12,
+			"taskTitle": "Implement Automated Data Retention and Cleanup System",
+			"complexityScore": 7,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Decompose data retention into subtasks for retention policy engine, automated cleanup service, secure deletion implementation, and GDPR compliance verification. Focus on data lifecycle automation and regulatory compliance.",
+			"reasoning": "Moderate-high complexity due to GDPR compliance requirements, secure data deletion, automated scheduling, and policy management. Critical for legal compliance and data governance."
+		},
+		{
+			"taskId": 1,
+			"taskTitle": "Setup Project Infrastructure and Database Schema",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on setup project infrastructure and database schema.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		}
+	]
+}

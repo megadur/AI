@@ -1,0 +1,11 @@
+# Task ID: 3
+# Title: Develop Order Creation and Management System
+# Status: pending
+# Dependencies: 2
+# Priority: high
+# Description: Implement the core functionality for rvPuR to create new Gutachtenaufträge with automatic creation of both rvPuR and rvSMD orders
+# Details:
+Create REST API endpoints for order creation, retrieval, and management. Implement automatic creation of both rvPuR-Auftrag and rvSMD-Auftrag when a new order is created. Add Gutachter selection functionality with dropdown/search interface. Implement order status tracking (created, assigned, in_progress, completed, cancelled). Create order listing and filtering capabilities. Add order details view with all associated information.
+
+# Test Strategy:
+Unit tests for order creation logic. Integration tests for dual order creation. API tests for all CRUD operations. Verify proper Gutachter assignment functionality.

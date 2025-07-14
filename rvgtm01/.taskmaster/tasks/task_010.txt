@@ -1,0 +1,11 @@
+# Task ID: 10
+# Title: Implement Stellungnahme (Statement) Request System
+# Status: pending
+# Dependencies: 7, 5
+# Priority: low
+# Description: Create functionality for rvGutachten to request additional statements from Gutachter for unclear reports
+# Details:
+Create Stellungnahme request interface with reason specification. Implement request notification system to Gutachter. Add Stellungnahme submission functionality with document upload. Create request-response tracking and history. Implement deadline management for Stellungnahme submissions. Add status tracking (requested, submitted, reviewed). Create integration with main Gutachten workflow.
+
+# Test Strategy:
+Unit tests for request logic. Integration tests for notification system. End-to-end tests for complete Stellungnahme workflow. Validation tests for request-response matching.

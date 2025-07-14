@@ -1,0 +1,221 @@
+{
+  "master": {
+    "tasks": [
+      {
+        "id": 1,
+        "title": "Setup Project Infrastructure and Database Schema",
+        "description": "Initialize the project structure and create the database schema for managing Gutachtenaufträge with proper user roles and authentication",
+        "details": "Set up a modern web application framework (e.g., Node.js with Express or Django). Create database tables for: users (rvPuR, rvGutachten, Gutachter), orders (rvPuR-Auftrag, rvSMD-Auftrag), documents, notifications, communications, and audit logs. Implement role-based authentication and authorization middleware. Use PostgreSQL or similar RDBMS for data persistence. Set up environment configuration for development, testing, and production.",
+        "testStrategy": "Unit tests for database models and migrations. Integration tests for authentication middleware. Verify all user roles can be created and authenticated properly.",
+        "priority": "high",
+        "dependencies": [],
+        "status": "in-progress",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Initialize Project Structure and Framework Setup",
+            "description": "Set up the foundational project structure with a modern web application framework and essential development tools",
+            "dependencies": [],
+            "details": "Create a new Node.js project with Express.js framework. Initialize package.json with essential dependencies including express, cors, helmet, dotenv, bcryptjs, jsonwebtoken, and development tools like nodemon, jest, and eslint. Set up folder structure with directories for routes, controllers, models, middleware, config, tests, and utils. Configure TypeScript if using TS. Set up Git repository with appropriate .gitignore file. Create basic server.js/app.js entry point with middleware configuration.",
+            "status": "pending",
+            "testStrategy": "Verify server starts successfully, basic middleware functions correctly, and project structure follows best practices"
+          },
+          {
+            "id": 2,
+            "title": "Configure Database Connection and Environment Setup",
+            "description": "Establish PostgreSQL database connection and configure environment variables for different deployment stages",
+            "dependencies": [
+              1
+            ],
+            "details": "Install and configure PostgreSQL database driver (pg for Node.js). Create database connection configuration with connection pooling. Set up environment configuration files (.env.development, .env.test, .env.production) with database credentials, JWT secrets, and other environment-specific variables. Create database configuration module that handles connection management and error handling. Implement database health check endpoint. Set up database migration framework (e.g., Knex.js migrations or Sequelize migrations).",
+            "status": "pending",
+            "testStrategy": "Test database connectivity across different environments, verify connection pooling works correctly, and validate environment variable loading"
+          },
+          {
+            "id": 3,
+            "title": "Design and Create Core Database Schema",
+            "description": "Create comprehensive database tables for users, orders, documents, and system entities with proper relationships",
+            "dependencies": [
+              2
+            ],
+            "details": "Create migration files for core tables: users table with role field (rvPuR, rvGutachten, Gutachter), user_profiles for extended user information, orders table for rvPuR-Auftrag and rvSMD-Auftrag with status tracking, documents table for file management with metadata, notifications table for system messages, communications table for user interactions, and audit_logs table for system tracking. Define proper foreign key relationships, indexes for performance, and constraints for data integrity. Include timestamps (created_at, updated_at) for all tables.",
+            "status": "pending",
+            "testStrategy": "Run migration scripts successfully, verify table relationships with sample data, and test constraint validations"
+          },
+          {
+            "id": 4,
+            "title": "Implement User Authentication and Session Management",
+            "description": "Create user registration, login, and JWT-based authentication system with secure session handling",
+            "dependencies": [
+              3
+            ],
+            "details": "Implement user registration endpoint with password hashing using bcryptjs. Create login endpoint that validates credentials and returns JWT tokens. Set up JWT token generation and validation middleware. Implement password reset functionality with secure token generation. Create user profile management endpoints. Add session management with refresh token capability. Implement logout functionality that invalidates tokens. Add rate limiting for authentication endpoints to prevent brute force attacks.",
+            "status": "pending",
+            "testStrategy": "Unit tests for authentication logic, integration tests for login/logout flows, security tests for token validation, and load tests for rate limiting"
+          },
+          {
+            "id": 5,
+            "title": "Develop Role-Based Authorization Middleware",
+            "description": "Create comprehensive authorization system that enforces role-based access control across all application endpoints",
+            "dependencies": [
+              4
+            ],
+            "details": "Create authorization middleware that checks user roles and permissions for each endpoint. Implement role-based access control (RBAC) with predefined roles: rvPuR (order creation), rvGutachten (order management), and Gutachter (order fulfillment). Create permission matrix defining what each role can access. Implement route protection middleware that can be applied to specific endpoints. Add user context injection into request objects. Create admin role management functionality for user role assignment. Implement audit logging for authorization decisions.",
+            "status": "pending",
+            "testStrategy": "Unit tests for authorization logic, integration tests for role-based endpoint access, security tests for privilege escalation attempts, and end-to-end tests for complete user workflows"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Implement User Management and Role-Based Access Control",
+        "description": "Create user registration, authentication, and role-based access control for rvPuR, rvGutachten, and Gutachter personas",
+        "details": "Implement JWT-based authentication system. Create user registration/login endpoints with role assignment. Implement middleware for role-based route protection. Create user profile management functionality. Use bcrypt for password hashing. Implement session management and logout functionality. Create admin interface for user management by rvGutachten role.",
+        "testStrategy": "Unit tests for authentication logic. Integration tests for role-based access control. End-to-end tests for user registration and login flows. Security testing for authentication vulnerabilities.",
+        "priority": "high",
+        "dependencies": [
+          1
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 3,
+        "title": "Develop Order Creation and Management System",
+        "description": "Implement the core functionality for rvPuR to create new Gutachtenaufträge with automatic creation of both rvPuR and rvSMD orders",
+        "details": "Create REST API endpoints for order creation, retrieval, and management. Implement automatic creation of both rvPuR-Auftrag and rvSMD-Auftrag when a new order is created. Add Gutachter selection functionality with dropdown/search interface. Implement order status tracking (created, assigned, in_progress, completed, cancelled). Create order listing and filtering capabilities. Add order details view with all associated information.",
+        "testStrategy": "Unit tests for order creation logic. Integration tests for dual order creation. API tests for all CRUD operations. Verify proper Gutachter assignment functionality.",
+        "priority": "high",
+        "dependencies": [
+          2
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 4,
+        "title": "Implement Document Management and Merging System",
+        "description": "Create functionality to upload, manage, and merge multiple documents into a single comprehensive document attached to orders",
+        "details": "Implement file upload functionality with support for common document formats (PDF, DOC, DOCX). Create document merging service using libraries like PDFtk or similar for PDF merging. Implement document storage using cloud storage (AWS S3) or local file system with proper security. Add document versioning and metadata tracking. Create document preview functionality. Implement document download and sharing capabilities with proper access controls.",
+        "testStrategy": "Unit tests for document upload and merging logic. Integration tests for file storage operations. End-to-end tests for complete document workflow. Performance tests for large document handling.",
+        "priority": "medium",
+        "dependencies": [
+          3
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 5,
+        "title": "Build Notification and Communication System",
+        "description": "Implement automated notification system for Gutachter assignment and communication features for questions and responses",
+        "details": "Create email notification service using SMTP or email service provider (SendGrid, AWS SES). Implement automated notifications for: new order assignments, deadline reminders, and status updates. Create in-app messaging system for Gutachter-rvGutachten communication. Implement notification preferences and delivery tracking. Add real-time notifications using WebSockets or Server-Sent Events. Create notification history and read/unread status tracking.",
+        "testStrategy": "Unit tests for notification logic. Integration tests for email delivery. End-to-end tests for communication workflows. Load testing for notification system performance.",
+        "priority": "medium",
+        "dependencies": [
+          3
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 6,
+        "title": "Develop Deadline Management and Reminder System",
+        "description": "Implement automated deadline tracking, reminder system, and Mahnwesen for overdue submissions",
+        "details": "Create deadline management service with configurable reminder intervals. Implement automated reminder emails before deadlines. Create Mahnwesen (dunning system) for overdue submissions with escalation levels. Add calendar integration for deadline visualization. Implement deadline extension functionality for rvGutachten. Create dashboard showing upcoming and overdue deadlines. Use cron jobs or task scheduler for automated processing.",
+        "testStrategy": "Unit tests for deadline calculation logic. Integration tests for reminder scheduling. End-to-end tests for complete deadline workflow. Time-based testing for reminder accuracy.",
+        "priority": "medium",
+        "dependencies": [
+          5
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 7,
+        "title": "Create Gutachten Submission and Digital Signature System",
+        "description": "Implement functionality for Gutachter to submit completed Gutachten with digital signature capabilities",
+        "details": "Create Gutachten submission interface with file upload and form validation. Implement digital signature functionality using libraries like DocuSign API or PDF-lib for PDF signing. Add submission status tracking and confirmation system. Create submission history and version control. Implement submission validation and completeness checks. Add preview functionality before final submission. Ensure compliance with digital signature standards (eIDAS, etc.).",
+        "testStrategy": "Unit tests for submission logic and validation. Integration tests for digital signature functionality. End-to-end tests for complete submission workflow. Security testing for signature verification.",
+        "priority": "medium",
+        "dependencies": [
+          4,
+          5
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 8,
+        "title": "Implement Order Cancellation and Visibility Management",
+        "description": "Create functionality for rvGutachten to cancel orders with 4-week visibility period and automatic cleanup",
+        "details": "Implement order cancellation functionality with proper status updates. Create 4-week visibility timer using database timestamps and scheduled jobs. Implement soft delete functionality to maintain cancelled orders for specified period. Create automatic cleanup service to permanently delete cancelled orders after 4 weeks. Add cancellation reason tracking and notification to affected Gutachter. Implement cancellation history and audit trail.",
+        "testStrategy": "Unit tests for cancellation logic. Integration tests for visibility timer functionality. End-to-end tests for complete cancellation workflow. Time-based testing for automatic cleanup.",
+        "priority": "medium",
+        "dependencies": [
+          6
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 9,
+        "title": "Develop Billing and Invoice Management System",
+        "description": "Create functionality for Gutachter to submit invoices and for rvGutachten to manage billing processes",
+        "details": "Create invoice submission interface for Gutachter with itemized billing capabilities. Implement invoice validation and approval workflow. Add invoice status tracking (submitted, approved, paid, rejected). Create invoice history and search functionality. Implement PDF invoice generation with proper formatting. Add integration capabilities for accounting systems. Create billing reports and analytics dashboard.",
+        "testStrategy": "Unit tests for invoice calculation logic. Integration tests for approval workflow. End-to-end tests for complete billing process. Validation tests for invoice data integrity.",
+        "priority": "low",
+        "dependencies": [
+          7
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 10,
+        "title": "Implement Stellungnahme (Statement) Request System",
+        "description": "Create functionality for rvGutachten to request additional statements from Gutachter for unclear reports",
+        "details": "Create Stellungnahme request interface with reason specification. Implement request notification system to Gutachter. Add Stellungnahme submission functionality with document upload. Create request-response tracking and history. Implement deadline management for Stellungnahme submissions. Add status tracking (requested, submitted, reviewed). Create integration with main Gutachten workflow.",
+        "testStrategy": "Unit tests for request logic. Integration tests for notification system. End-to-end tests for complete Stellungnahme workflow. Validation tests for request-response matching.",
+        "priority": "low",
+        "dependencies": [
+          7,
+          5
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 11,
+        "title": "Build Comprehensive Audit Trail and Logging System",
+        "description": "Implement complete audit logging for all system activities to ensure Nachvollziehbarkeit (traceability)",
+        "details": "Create comprehensive audit logging system tracking all user actions, status changes, and system events. Implement structured logging with proper log levels and formatting. Create audit trail viewing interface for administrators. Add log retention policies and archiving. Implement log search and filtering capabilities. Create audit reports for compliance purposes. Use logging frameworks like Winston (Node.js) or Python logging.",
+        "testStrategy": "Unit tests for logging functionality. Integration tests for audit trail completeness. Performance tests for logging system impact. Compliance testing for audit requirements.",
+        "priority": "medium",
+        "dependencies": [
+          8
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 12,
+        "title": "Implement Automated Data Retention and Cleanup System",
+        "description": "Create automated system to delete completed Gutachten and associated documents after 4-week retention period",
+        "details": "Implement automated cleanup service using cron jobs or task scheduler. Create data retention policy engine with configurable retention periods. Implement secure data deletion for documents and database records. Add retention status tracking and notifications before deletion. Create data archiving functionality for compliance requirements. Implement cleanup logs and reporting. Ensure GDPR compliance for data deletion processes.",
+        "testStrategy": "Unit tests for cleanup logic. Integration tests for retention policy enforcement. End-to-end tests for complete data lifecycle. Time-based testing for retention period accuracy.",
+        "priority": "medium",
+        "dependencies": [
+          11
+        ],
+        "status": "pending",
+        "subtasks": []
+      }
+    ],
+    "metadata": {
+      "created": "2025-07-14T16:30:17.246Z",
+      "updated": "2025-07-14T16:50:21.405Z",
+      "description": "Tasks for master context"
+    }
+  }
+}

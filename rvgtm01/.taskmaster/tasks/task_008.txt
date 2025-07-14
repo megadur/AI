@@ -1,0 +1,11 @@
+# Task ID: 8
+# Title: Implement Order Cancellation and Visibility Management
+# Status: pending
+# Dependencies: 6
+# Priority: medium
+# Description: Create functionality for rvGutachten to cancel orders with 4-week visibility period and automatic cleanup
+# Details:
+Implement order cancellation functionality with proper status updates. Create 4-week visibility timer using database timestamps and scheduled jobs. Implement soft delete functionality to maintain cancelled orders for specified period. Create automatic cleanup service to permanently delete cancelled orders after 4 weeks. Add cancellation reason tracking and notification to affected Gutachter. Implement cancellation history and audit trail.
+
+# Test Strategy:
+Unit tests for cancellation logic. Integration tests for visibility timer functionality. End-to-end tests for complete cancellation workflow. Time-based testing for automatic cleanup.

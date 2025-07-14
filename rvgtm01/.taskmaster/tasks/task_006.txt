@@ -1,0 +1,11 @@
+# Task ID: 6
+# Title: Develop Deadline Management and Reminder System
+# Status: pending
+# Dependencies: 5
+# Priority: medium
+# Description: Implement automated deadline tracking, reminder system, and Mahnwesen for overdue submissions
+# Details:
+Create deadline management service with configurable reminder intervals. Implement automated reminder emails before deadlines. Create Mahnwesen (dunning system) for overdue submissions with escalation levels. Add calendar integration for deadline visualization. Implement deadline extension functionality for rvGutachten. Create dashboard showing upcoming and overdue deadlines. Use cron jobs or task scheduler for automated processing.
+
+# Test Strategy:
+Unit tests for deadline calculation logic. Integration tests for reminder scheduling. End-to-end tests for complete deadline workflow. Time-based testing for reminder accuracy.
