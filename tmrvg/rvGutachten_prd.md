@@ -1,4 +1,5 @@
 <context>
+
 # Overview  
 rvGutachten is a web-based platform designed for assessors to efficiently manage, read, and track assessment assignments. The application enables assessors to browse, view, and interact with a list of PDF documents associated with each assignment, as well as send and read messages related to those documents or general communications. The platform streamlines document access and communication, improving productivity and knowledge sharing among assessors. Assignment management and PDF uploads are handled by a separate administrative app, allowing rvGutachten to focus on the assessor experience.
 
@@ -28,6 +29,7 @@ rvGutachten is a web-based platform designed for assessors to efficiently manage
 
 </context>
 <PRD>
+
 # Technical Architecture  
 - **System Components**:
   - Frontend web app for assessors (rvGutachten.Web)

@@ -77,7 +77,74 @@
           1
         ],
         "status": "pending",
-        "subtasks": []
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create User entity and repository",
+            "description": "Develop User entity with JPA annotations and create UserRepository for database operations",
+            "dependencies": [],
+            "details": "Create User entity class with fields (id, name, email, password, role enum), add JPA annotations (@Entity, @Table, @Id, @GeneratedValue), implement UserRepository interface extending JpaRepository with custom query methods for finding users by email and role, add password encoding configuration",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "Implement JWT utility classes and configuration",
+            "description": "Create JWT utility classes for token generation, validation, and configuration setup",
+            "dependencies": [],
+            "details": "Implement JwtUtil class with methods for token generation, validation, and claims extraction, create JWT configuration properties (secret key, expiration time), add JWT dependencies to pom.xml, implement token refresh mechanism, create JWT exception handling classes",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "Build authentication controllers and endpoints",
+            "description": "Develop REST controllers for user authentication with login and logout endpoints",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Create AuthController with login endpoint accepting username/password, implement logout endpoint for token invalidation, create UserController for user registration and profile management, add request/response DTOs (LoginRequest, LoginResponse, UserDTO), implement password validation and user authentication logic",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 4,
+            "title": "Configure Spring Security with JWT filters",
+            "description": "Set up Spring Security configuration with JWT authentication filters and security chains",
+            "dependencies": [
+              2,
+              3
+            ],
+            "details": "Create JwtAuthenticationFilter for request interception and token validation, implement JwtAuthenticationEntryPoint for unauthorized access handling, configure SecurityConfig with JWT filter chain, set up CORS configuration, configure password encoder bean, add security exclusions for public endpoints",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 5,
+            "title": "Implement role-based authorization",
+            "description": "Set up role-based access control with method-level security annotations",
+            "dependencies": [
+              1,
+              4
+            ],
+            "details": "Create Role enum (ASSESSOR, MANAGER, ADMIN), implement @PreAuthorize annotations on controller methods, create custom authorization expressions, set up method-level security configuration, implement role hierarchy if needed, add role-based endpoint restrictions",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 6,
+            "title": "Create Angular authentication services and guards",
+            "description": "Develop Angular authentication service, HTTP interceptors, and route guards for frontend security",
+            "dependencies": [
+              3,
+              4
+            ],
+            "details": "Create AuthService with login/logout methods and token management, implement JWT HTTP interceptor for automatic token attachment, create AuthGuard for route protection, implement RoleGuard for role-based route access, add token refresh logic, create user state management, implement automatic logout on token expiration",
+            "status": "pending",
+            "testStrategy": ""
+          }
+        ]
       },
       {
         "id": 3,
@@ -90,7 +157,61 @@
           2
         ],
         "status": "pending",
-        "subtasks": []
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Design and create core entities (User, Assignment, Document, Message)",
+            "description": "Create JPA entity classes for User, Assignment, Document, and Message with proper annotations, field mappings, and basic validation constraints",
+            "dependencies": [],
+            "details": "1) Create User entity with id, name, email, password, role enum fields and JPA annotations, 2) Create Assignment entity with id, title, status enum, assessorId FK, createdAt, updatedAt fields, 3) Create Document entity with id, assignmentId FK, fileName, fileUrl, fileSize, uploadedAt, metadata JSON fields, 4) Create Message entity with id, senderId FK, recipientId FK, assignmentId FK nullable, documentId FK nullable, content, timestamp, isRead fields, 5) Add validation annotations (@NotNull, @Size, @Email) and audit fields",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "Define JPA relationships and constraints",
+            "description": "Establish proper JPA relationships between entities using @OneToMany, @ManyToOne, @JoinColumn annotations and define cascade operations",
+            "dependencies": [
+              1
+            ],
+            "details": "1) Define User to Assignment relationship (@OneToMany for assessor assignments), 2) Define Assignment to Document relationship (@OneToMany with cascade operations), 3) Define User to Message relationships (@ManyToOne for sender and recipient), 4) Define Assignment to Message relationship (@OneToMany nullable), 5) Define Document to Message relationship (@OneToMany nullable), 6) Configure cascade types (PERSIST, MERGE, REMOVE) and fetch strategies (LAZY/EAGER), 7) Add foreign key constraints and referential integrity",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "Create repository interfaces and basic queries",
+            "description": "Implement JPA repository interfaces extending JpaRepository with custom query methods for data access operations",
+            "dependencies": [
+              2
+            ],
+            "details": "1) Create UserRepository extending JpaRepository with findByEmail, findByRole methods, 2) Create AssignmentRepository with findByAssessorId, findByStatus, findByCreatedAtBetween methods, 3) Create DocumentRepository with findByAssignmentId, findByFileName methods, 4) Create MessageRepository with findBySenderIdAndRecipientId, findByAssignmentId, findUnreadMessages methods, 5) Add custom @Query annotations for complex queries, 6) Implement pagination and sorting support using Pageable",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 4,
+            "title": "Implement database migration scripts with Flyway",
+            "description": "Create Flyway migration scripts to set up database schema with proper table creation, constraints, and initial data",
+            "dependencies": [
+              3
+            ],
+            "details": "1) Configure Flyway in application properties with migration locations, 2) Create V1__Create_users_table.sql with user table structure and constraints, 3) Create V2__Create_assignments_table.sql with assignment table and foreign keys, 4) Create V3__Create_documents_table.sql with document table and relationships, 5) Create V4__Create_messages_table.sql with message table and multiple foreign keys, 6) Add V5__Insert_initial_data.sql for default roles and test users, 7) Validate migration scripts and rollback procedures",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 5,
+            "title": "Add indexes and performance optimizations",
+            "description": "Create database indexes on frequently queried columns and implement performance optimizations for better query execution",
+            "dependencies": [
+              4
+            ],
+            "details": "1) Add indexes on User.email, User.role for authentication queries, 2) Add indexes on Assignment.assessorId, Assignment.status, Assignment.createdAt for listing queries, 3) Add indexes on Document.assignmentId, Document.fileName for document retrieval, 4) Add composite indexes on Message (senderId, recipientId), (assignmentId, timestamp) for message queries, 5) Add database constraints for data integrity (unique constraints, check constraints), 6) Configure connection pooling and query optimization settings, 7) Add database performance monitoring queries",
+            "status": "pending",
+            "testStrategy": ""
+          }
+        ]
       },
       {
         "id": 4,
@@ -103,7 +224,73 @@
           3
         ],
         "status": "pending",
-        "subtasks": []
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create Assignment Service Layer with CRUD Operations",
+            "description": "Implement AssignmentService class with comprehensive CRUD operations including create, read, update, delete assignments with proper validation and error handling",
+            "dependencies": [],
+            "details": "1) Create Assignment entity with JPA annotations (id, title, description, status, assignedTo, createdBy, dueDate, priority), 2) Implement AssignmentRepository extending JpaRepository with custom query methods, 3) Create AssignmentService with methods for CRUD operations (createAssignment, getAssignmentById, updateAssignment, deleteAssignment), 4) Add business logic validation for assignment creation and updates, 5) Implement assignment search and filtering methods, 6) Add proper exception handling and logging",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "Implement REST API Controllers and Endpoints",
+            "description": "Develop AssignmentController with RESTful endpoints for assignment management including proper HTTP status codes and error responses",
+            "dependencies": [
+              1
+            ],
+            "details": "1) Create AssignmentController with REST endpoints (/api/assignments GET, POST, PUT, DELETE), 2) Implement AssignmentDTO classes for API requests and responses, 3) Add proper HTTP status codes and error handling, 4) Implement pagination support for assignment listing, 5) Add filtering and sorting parameters to GET endpoints, 6) Create validation annotations for request DTOs, 7) Add API documentation with Swagger annotations, 8) Implement proper security annotations for role-based access",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "Build Assignment Status Management and Workflow",
+            "description": "Implement assignment status tracking system with workflow management for different assignment states and transitions",
+            "dependencies": [
+              1
+            ],
+            "details": "1) Create AssignmentStatus enum (PENDING, ACCEPTED, IN_PROGRESS, COMPLETED, CANCELLED), 2) Implement status transition validation logic, 3) Add assignment workflow management with state machine pattern, 4) Create status history tracking for audit purposes, 5) Implement automatic status updates based on business rules, 6) Add notification triggers for status changes, 7) Create status-based filtering and reporting methods, 8) Add proper logging for status transitions",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 4,
+            "title": "Create Angular Assignment Services and HTTP Integration",
+            "description": "Develop Angular services for assignment management with HTTP client integration and proper error handling",
+            "dependencies": [
+              2
+            ],
+            "details": "1) Create AssignmentService with HTTP client methods (getAssignments, createAssignment, updateAssignment, deleteAssignment), 2) Implement proper error handling and HTTP interceptors, 3) Add assignment data models and interfaces, 4) Create assignment state management with RxJS observables, 5) Implement caching strategy for assignment data, 6) Add loading states and progress indicators, 7) Create assignment validation service, 8) Implement retry logic for failed requests",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 5,
+            "title": "Develop Assignment Listing and Filtering Components",
+            "description": "Build Angular components for assignment listing with advanced filtering, sorting, and pagination capabilities",
+            "dependencies": [
+              4
+            ],
+            "details": "1) Create assignment-list component with data table display, 2) Implement filtering by status, assignee, date range, and priority, 3) Add sorting functionality for all columns, 4) Implement pagination with configurable page sizes, 5) Create search functionality with debounced input, 6) Add bulk operations for multiple assignments, 7) Implement responsive design for mobile devices, 8) Add export functionality for assignment data, 9) Create assignment status indicators and badges",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 6,
+            "title": "Implement Assignment Detail Views and Status Updates",
+            "description": "Create detailed assignment view components with status update functionality and comprehensive assignment information display",
+            "dependencies": [
+              3,
+              5
+            ],
+            "details": "1) Create assignment-detail component with comprehensive assignment information, 2) Implement status update functionality with dropdown selection, 3) Add assignment editing capabilities with form validation, 4) Create assignment history and audit trail display, 5) Implement comment system for assignment updates, 6) Add file attachment support for assignments, 7) Create assignment timeline view with status changes, 8) Implement real-time updates for assignment changes, 9) Add assignment sharing and collaboration features",
+            "status": "pending",
+            "testStrategy": ""
+          }
+        ]
       },
       {
         "id": 5,
@@ -116,7 +303,85 @@
           4
         ],
         "status": "pending",
-        "subtasks": []
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Configure file storage infrastructure (local/cloud)",
+            "description": "Set up file storage system supporting both local filesystem and cloud storage (Azure Blob Storage) with configuration management and storage abstraction layer",
+            "dependencies": [],
+            "details": "Configure storage providers, implement storage abstraction interface, set up Azure Blob Storage connection, create local filesystem storage implementation, add storage configuration properties, implement storage provider factory pattern",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "Implement document service with upload/download operations",
+            "description": "Create DocumentService with core file operations including upload, download, and basic file management functionality",
+            "dependencies": [
+              1
+            ],
+            "details": "Implement DocumentService class, create upload method with stream handling, implement download operations, add file existence checks, create file path management, implement error handling for file operations",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "Create secure file serving with access control",
+            "description": "Implement secure file serving endpoints with role-based access control and authorization checks",
+            "dependencies": [
+              2
+            ],
+            "details": "Create DocumentController with secure endpoints, implement access control middleware, add user permission validation, create secure file streaming, implement audit logging for file access, add rate limiting for downloads",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 4,
+            "title": "Build file validation and metadata extraction",
+            "description": "Implement comprehensive file validation for PDF format, size limits, and metadata extraction capabilities",
+            "dependencies": [
+              2
+            ],
+            "details": "Create file validation service, implement PDF format validation, add file size and type checks, implement metadata extraction from PDFs, create thumbnail generation, add virus scanning integration, implement file integrity checks",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 5,
+            "title": "Develop Angular file upload service with progress tracking",
+            "description": "Create Angular service for file uploads with real-time progress tracking, error handling, and upload management",
+            "dependencies": [
+              3,
+              4
+            ],
+            "details": "Implement Angular file upload service, create progress tracking with observables, add upload cancellation functionality, implement retry logic for failed uploads, create upload queue management, add file preview capabilities",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 6,
+            "title": "Create document management UI components",
+            "description": "Build comprehensive Angular UI components for document management including upload interface, document listing, and file operations",
+            "dependencies": [
+              5
+            ],
+            "details": "Create file upload component with drag-and-drop, implement document list component with thumbnails, build file preview modal, create document search and filtering, implement bulk operations interface, add document status indicators",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 7,
+            "title": "Implement file deletion and cleanup processes",
+            "description": "Develop secure file deletion system with cleanup processes, audit trails, and automated maintenance tasks",
+            "dependencies": [
+              3,
+              4
+            ],
+            "details": "Implement secure file deletion service, create soft delete functionality, add cleanup scheduled tasks, implement orphaned file detection, create deletion audit trails, add file recovery mechanisms, implement storage optimization processes",
+            "status": "pending",
+            "testStrategy": ""
+          }
+        ]
       },
       {
         "id": 6,
@@ -129,7 +394,61 @@
           5
         ],
         "status": "pending",
-        "subtasks": []
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Install and configure PDF.js library in Angular projects",
+            "description": "Set up PDF.js library in the Angular project with proper configuration for document rendering capabilities",
+            "dependencies": [],
+            "details": "Install PDF.js npm package, configure Angular build settings for PDF.js worker files, set up proper asset paths, configure TypeScript declarations, and establish basic PDF.js service initialization",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "Create PDF viewer component with basic rendering",
+            "description": "Develop the core PDF viewer component that can load and display PDF documents using PDF.js",
+            "dependencies": [
+              1
+            ],
+            "details": "Create Angular component with PDF canvas rendering, implement PDF document loading functionality, handle PDF page rendering, add basic error handling for invalid PDFs, and create loading states for document processing",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "Implement navigation and zoom controls",
+            "description": "Add interactive controls for PDF navigation and zoom functionality to enhance user experience",
+            "dependencies": [
+              2
+            ],
+            "details": "Implement page navigation controls (previous/next, go to page), add zoom in/out functionality with zoom level indicators, create fit-to-width and fit-to-page options, implement keyboard shortcuts for navigation, and add page number display",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 4,
+            "title": "Add PDF search and toolbar functionality",
+            "description": "Implement search capabilities within PDF documents and create a comprehensive toolbar with common actions",
+            "dependencies": [
+              3
+            ],
+            "details": "Create text search functionality with highlight results, implement search navigation (next/previous match), build toolbar with print, download, and share options, add search result counter, and implement case-sensitive search toggle",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 5,
+            "title": "Optimize for responsive design and performance",
+            "description": "Ensure PDF viewer works efficiently across different devices and screen sizes with optimal performance",
+            "dependencies": [
+              4
+            ],
+            "details": "Implement responsive layout for mobile and tablet devices, optimize PDF rendering performance for large files, add lazy loading for multi-page documents, implement viewport-based rendering, and create touch gesture support for mobile navigation",
+            "status": "pending",
+            "testStrategy": ""
+          }
+        ]
       },
       {
         "id": 7,
@@ -142,7 +461,74 @@
           6
         ],
         "status": "pending",
-        "subtasks": []
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create message service layer with CRUD and threading logic",
+            "description": "Develop MessageService with comprehensive CRUD operations, message threading functionality, and business logic for message management including thread grouping and relationship handling",
+            "dependencies": [],
+            "details": "Implement MessageService class with methods for creating, reading, updating, and deleting messages. Add message threading logic to group related messages, implement parent-child message relationships, and create methods for retrieving message threads. Include message validation, thread hierarchy management, and message status tracking within the service layer.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "Implement message REST API endpoints",
+            "description": "Create MessageController with comprehensive REST endpoints for all messaging operations including sending, receiving, and thread management",
+            "dependencies": [
+              1
+            ],
+            "details": "Develop REST endpoints for message operations: POST /api/messages (send message), GET /api/messages (list messages), GET /api/messages/{id} (get message), PUT /api/messages/{id} (update message), DELETE /api/messages/{id} (delete message), GET /api/messages/threads (get threads), GET /api/messages/threads/{threadId} (get thread messages). Include proper request/response DTOs, error handling, and validation.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "Build message filtering and search functionality",
+            "description": "Implement advanced filtering and search capabilities for messages including context-based filtering, full-text search, and sorting options",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Create message filtering by assignment context, document context, sender, recipient, date ranges, and message status. Implement full-text search across message content and subjects. Add sorting options by date, sender, priority, and relevance. Include pagination support and advanced search operators for complex queries.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 4,
+            "title": "Create Angular messaging service with real-time updates",
+            "description": "Develop Angular service for messaging operations with WebSocket integration for real-time message updates and notifications",
+            "dependencies": [
+              2
+            ],
+            "details": "Create MessagingService with HTTP client methods for all message operations. Integrate WebSocket connection for real-time message delivery and updates. Implement message caching, offline message queuing, and automatic reconnection logic. Add observable streams for real-time message updates and notification events.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 5,
+            "title": "Develop message UI components (list, composition, threads)",
+            "description": "Build comprehensive Angular components for message display, composition, and thread management with responsive design and user-friendly interfaces",
+            "dependencies": [
+              4
+            ],
+            "details": "Create MessageListComponent for displaying messages with thread grouping, MessageCompositionComponent with rich text editor and attachment support, MessageThreadComponent for threaded conversation view, and MessageDetailComponent for individual message display. Include responsive design, keyboard shortcuts, drag-and-drop functionality, and accessibility features.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 6,
+            "title": "Implement message status tracking and notifications",
+            "description": "Develop comprehensive message status tracking system with read/unread indicators, delivery confirmations, and integrated notification system",
+            "dependencies": [
+              3,
+              5
+            ],
+            "details": "Implement message read/unread status tracking, delivery confirmations, and typing indicators. Create notification system for new messages, mentions, and important updates. Add message priority levels, urgent message handling, and notification preferences. Include badge counters, sound notifications, and desktop notification support.",
+            "status": "pending",
+            "testStrategy": ""
+          }
+        ]
       },
       {
         "id": 8,
@@ -155,7 +541,85 @@
           7
         ],
         "status": "pending",
-        "subtasks": []
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Configure Spring WebSocket and STOMP protocol",
+            "description": "Set up Spring WebSocket configuration with STOMP messaging protocol for real-time communication infrastructure",
+            "dependencies": [],
+            "details": "Configure WebSocketConfig class with @EnableWebSocketMessageBroker, set up STOMP endpoints, configure message broker with in-memory or external broker, define allowed origins for CORS, implement WebSocket security configuration",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "Create notification service and event management",
+            "description": "Develop NotificationService for managing notification events and business logic for different notification types",
+            "dependencies": [
+              1
+            ],
+            "details": "Create NotificationService with methods for creating, sending, and managing notifications, implement notification event types (NEW_ASSIGNMENT, NEW_MESSAGE, DOCUMENT_UPDATE), create notification DTOs and entities, implement event listeners for triggering notifications",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "Implement WebSocket endpoints and message routing",
+            "description": "Create WebSocket controllers and message routing for real-time notification delivery to connected clients",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Implement WebSocket controller with @MessageMapping annotations, create message routing logic for user-specific notifications, implement broadcast messaging for system-wide notifications, add message validation and error handling",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 4,
+            "title": "Build notification persistence for offline users",
+            "description": "Implement database storage for notifications to handle offline users and notification history",
+            "dependencies": [
+              2
+            ],
+            "details": "Create Notification entity with JPA annotations, implement NotificationRepository, create notification persistence logic for offline users, implement notification status tracking (SENT, DELIVERED, READ), add cleanup mechanism for old notifications",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 5,
+            "title": "Create Angular WebSocket service with reconnection logic",
+            "description": "Develop Angular service for WebSocket connection management with automatic reconnection and error handling",
+            "dependencies": [
+              3
+            ],
+            "details": "Create WebSocketService using SockJS and STOMP client, implement automatic reconnection logic with exponential backoff, add connection status monitoring, implement message queuing for offline scenarios, create subscription management for different notification types",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 6,
+            "title": "Develop notification UI components and preferences",
+            "description": "Build Angular components for displaying notifications with toast/popup interface and user preference settings",
+            "dependencies": [
+              5
+            ],
+            "details": "Create notification toast component with different notification types styling, implement notification popup with action buttons, create notification preferences component for user settings, implement notification sound and visual customization options, add notification permission handling",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 7,
+            "title": "Implement notification history and management",
+            "description": "Create notification history interface and management features for users to view and manage their notifications",
+            "dependencies": [
+              4,
+              6
+            ],
+            "details": "Create notification history component with pagination and filtering, implement mark as read/unread functionality, add notification deletion and bulk operations, create notification search and sorting capabilities, implement notification export functionality",
+            "status": "pending",
+            "testStrategy": ""
+          }
+        ]
       },
       {
         "id": 9,
@@ -168,7 +632,98 @@
           8
         ],
         "status": "pending",
-        "subtasks": []
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create assessment upload service and validation",
+            "description": "Implement AssessmentUploadService with file validation, size limits, format checking, and metadata extraction for PDF assessments",
+            "dependencies": [],
+            "details": "Create service class with methods for file validation (PDF format, size limits, content verification), implement metadata extraction, add virus scanning integration, create validation rules for assessment content structure",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "Implement digital signature functionality with PDF libraries",
+            "description": "Integrate PDF signing libraries (iText/PDFBox) to enable digital signature creation, verification, and certificate management",
+            "dependencies": [
+              1
+            ],
+            "details": "Configure PDF signing libraries, implement digital certificate handling, create signature creation and verification methods, add timestamp authority integration, implement signature validation workflows",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "Build assessment status tracking and versioning",
+            "description": "Create assessment versioning system with status tracking (DRAFT, SUBMITTED, SIGNED) and version history management",
+            "dependencies": [
+              1
+            ],
+            "details": "Implement assessment entity with version fields, create status enum and state transitions, build version history tracking, add rollback functionality, implement version comparison utilities",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 4,
+            "title": "Create assessment upload API endpoints",
+            "description": "Develop REST endpoints for assessment upload, validation, status updates, and file retrieval with proper error handling",
+            "dependencies": [
+              1,
+              3
+            ],
+            "details": "Create AssessmentController with upload endpoints, implement multipart file handling, add validation middleware, create status update endpoints, implement error response handling and logging",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 5,
+            "title": "Develop Angular signature pad component",
+            "description": "Build Angular component with signature pad functionality for digital signature capture and PDF integration",
+            "dependencies": [
+              2
+            ],
+            "details": "Create signature pad component using canvas or signature libraries, implement signature capture and validation, add signature preview functionality, integrate with PDF signing service, create signature management interface",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 6,
+            "title": "Build assessment review and submission workflow",
+            "description": "Create comprehensive workflow for assessment review, approval, and submission with multi-step validation",
+            "dependencies": [
+              4,
+              5
+            ],
+            "details": "Implement assessment review interface, create submission workflow with validation steps, add approval process for supervisors, implement submission confirmation dialogs, create workflow state management",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 7,
+            "title": "Implement audit trail and logging",
+            "description": "Create comprehensive audit logging system for all assessment operations, signatures, and status changes",
+            "dependencies": [
+              3,
+              6
+            ],
+            "details": "Implement audit log entity and service, create logging interceptors for all assessment operations, add signature verification logging, implement audit trail queries and reporting, create compliance reporting features",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 8,
+            "title": "Create signed document download functionality",
+            "description": "Implement secure download system for signed assessment documents with access control and integrity verification",
+            "dependencies": [
+              2,
+              7
+            ],
+            "details": "Create secure download endpoints with authentication, implement document integrity verification, add download logging and tracking, create batch download functionality, implement access control for document retrieval",
+            "status": "pending",
+            "testStrategy": ""
+          }
+        ]
       },
       {
         "id": 10,
@@ -181,7 +736,82 @@
           9
         ],
         "status": "pending",
-        "subtasks": []
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create assessor dashboard with assignment overview",
+            "description": "Develop a specialized dashboard for assessors showing their assigned documents, progress statistics, and task overview with filtering and sorting capabilities",
+            "dependencies": [],
+            "details": "Build AssessorDashboardComponent with assignment list, progress charts, deadline tracking, and quick action buttons for document access",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "Build manager dashboard with team tracking",
+            "description": "Create a manager-specific dashboard displaying team member assignments, progress monitoring, workload distribution, and team performance metrics",
+            "dependencies": [],
+            "details": "Implement ManagerDashboardComponent with team overview, assignment distribution charts, progress tracking, and team member performance indicators",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "Implement admin dashboard with user management",
+            "description": "Develop comprehensive admin dashboard with system overview, user management interface, system statistics, and administrative controls",
+            "dependencies": [],
+            "details": "Create AdminDashboardComponent with user management panel, system metrics, role assignment interface, and administrative tools",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 4,
+            "title": "Create user CRUD operations and role management",
+            "description": "Implement complete user management system with create, read, update, delete operations and role assignment functionality for administrators",
+            "dependencies": [
+              3
+            ],
+            "details": "Build UserManagementService, UserController with REST endpoints, role assignment logic, and user profile management components",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 5,
+            "title": "Build analytics and reporting components",
+            "description": "Develop analytics components for each dashboard type including charts, statistics, performance metrics, and customizable reporting features",
+            "dependencies": [
+              1,
+              2,
+              3
+            ],
+            "details": "Create AnalyticsService, chart components using Chart.js, performance metrics calculation, and dashboard-specific analytics widgets",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 6,
+            "title": "Implement role-based UI visibility and navigation",
+            "description": "Create role-based access control for UI elements, navigation menus, and feature visibility based on user roles and permissions",
+            "dependencies": [
+              4
+            ],
+            "details": "Implement AuthGuard services, role-based routing, conditional UI rendering, and navigation menu filtering based on user permissions",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 7,
+            "title": "Create export functionality and system configuration",
+            "description": "Implement data export capabilities for reports and analytics, along with system configuration management for administrators",
+            "dependencies": [
+              5,
+              6
+            ],
+            "details": "Build ExportService for PDF/Excel generation, report export components, system configuration interface, and settings management functionality",
+            "status": "pending",
+            "testStrategy": ""
+          }
+        ]
       }
     ],
     "metadata": {
