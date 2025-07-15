@@ -1,0 +1,61 @@
+{
+  "BundleId": "72bd741c-7ad8-41d8-97c3-9aabbdd0f5b4",
+  "PrescriptionId": "160.123.456.789.123.58",
+  "Timestamp": "2020-02-04T16:30:00+01:00",
+  "Pharmacy": {
+    "Id": "11ba8a7b-79f6-4b7a-8a29-0524c9e0ba41",
+    "IK_Number": "123456789",
+    "Name": "Adler-Apotheke",
+    "Address": {
+      "Street": "Taunusstraße",
+      "HouseNumber": "89",
+      "City": "Langen",
+      "PostalCode": "63225",
+      "Country": "DE",
+      "FullAddress": "Taunusstraße 89, 63225 Langen, DE"
+    }
+  },
+  "MedicationDispense": {
+    "Id": "1c7be124-8925-46db-9c44-717838ec767d",
+    "Status": "completed",
+    "PrescriptionId": "160.123.456.789.123.58",
+    "HandedOverDate": "2020-02-04T00:00:00",
+    "Type": "Abgabeinformationen"
+  },
+  "Invoice": {
+    "Id": "4ee99e8d-6930-414e-9304-5ee3e6cd64bc",
+    "Status": "issued",
+    "LineItems": [
+      {
+        "Sequence": 1,
+        "PZN": "05454378",
+        "Amount": 2769.0,
+        "Currency": "EUR",
+        "VatRate": 19.0,
+        "CopaymentAmount": 5.0,
+        "CopaymentCategory": "0",
+        "Zusatzattribute": {
+          "Markt": {
+            "Schluessel": "1",
+            "Gruppe": "1"
+          },
+          "Rabattvertragserfuellung": {
+            "Gruppe": "2",
+            "Schluessel": "1"
+          },
+          "PreisguenstigesFAM": {
+            "Gruppe": "3",
+            "Schluessel": "0"
+          },
+          "ImportFAM": {
+            "Gruppe": "4",
+            "Schluessel": "0"
+          }
+        }
+      }
+    ],
+    "TotalGross": 2769.0,
+    "Currency": "EUR",
+    "Copayment": 5.0
+  }
+}

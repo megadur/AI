@@ -1,0 +1,13 @@
+d:\data\code\_examples\AI\zitest\ERezeptExtractor\bin\Debug\net8.0\ERezeptExtractor.deps.json
+d:\data\code\_examples\AI\zitest\ERezeptExtractor\bin\Debug\net8.0\ERezeptExtractor.dll
+d:\data\code\_examples\AI\zitest\ERezeptExtractor\bin\Debug\net8.0\ERezeptExtractor.pdb
+d:\data\code\_examples\AI\zitest\ERezeptExtractor\obj\Debug\net8.0\ERezeptExtractor.csproj.AssemblyReference.cache
+d:\data\code\_examples\AI\zitest\ERezeptExtractor\obj\Debug\net8.0\ERezeptExtractor.GeneratedMSBuildEditorConfig.editorconfig
+d:\data\code\_examples\AI\zitest\ERezeptExtractor\obj\Debug\net8.0\ERezeptExtractor.AssemblyInfoInputs.cache
+d:\data\code\_examples\AI\zitest\ERezeptExtractor\obj\Debug\net8.0\ERezeptExtractor.AssemblyInfo.cs
+d:\data\code\_examples\AI\zitest\ERezeptExtractor\obj\Debug\net8.0\ERezeptExtractor.csproj.CoreCompileInputs.cache
+d:\data\code\_examples\AI\zitest\ERezeptExtractor\obj\Debug\net8.0\ERezeptExtractor.sourcelink.json
+d:\data\code\_examples\AI\zitest\ERezeptExtractor\obj\Debug\net8.0\ERezeptExtractor.dll
+d:\data\code\_examples\AI\zitest\ERezeptExtractor\obj\Debug\net8.0\refint\ERezeptExtractor.dll
+d:\data\code\_examples\AI\zitest\ERezeptExtractor\obj\Debug\net8.0\ERezeptExtractor.pdb
+d:\data\code\_examples\AI\zitest\ERezeptExtractor\obj\Debug\net8.0\ref\ERezeptExtractor.dll

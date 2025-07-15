@@ -5,7 +5,7 @@
 # Priority: high
 # Description: Initialize the multi-module project structure with Spring Boot backend, Angular frontend apps, and PostgreSQL database configuration
 # Details:
-Create a multi-module project structure: 1) Spring Boot backend API module with Maven/Gradle configuration, 2) Three Angular SPA modules (rvGutachten.Web for assessors, rvGutachten.Verw for managers, rvGutachten.Admin for admins), 3) Configure PostgreSQL database connection with application.yml/properties, 4) Setup Docker containers for local development, 5) Configure CORS settings for frontend-backend communication, 6) Setup basic project structure with controllers, services, repositories packages in Spring Boot, 7) Initialize Angular projects with Angular CLI and configure routing modules
+Create a multi-module project structure: 1) Spring Boot backend API module with Maven configuration, 2) Two Angular SPA modules (rvGutachten.Web for assessors, rvGutachten.Verw for managers), 3) Configure PostgreSQL database connection with application.yml/properties, 4) Setup Docker containers for local development, 5) Configure CORS settings for frontend-backend communication, 6) Setup basic project structure with controllers, services, repositories packages in Spring Boot, 7) Initialize Angular projects with Angular CLI and configure routing modules
 
 # Test Strategy:
 Verify project builds successfully, database connection works, Angular apps serve correctly, and basic health endpoints respond
@@ -13,9 +13,9 @@ Verify project builds successfully, database connection works, Angular apps serv
 # Subtasks:
 ## 1. Initialize Multi-Module Project Structure [in-progress]
 ### Dependencies: None
-### Description: Create the root project structure with Maven/Gradle configuration for multi-module setup including Spring Boot backend and three Angular frontend modules
+### Description: Create the root project structure with Maven configuration for multi-module setup including Spring Boot backend and three Angular frontend modules
 ### Details:
-Create root directory with Maven/Gradle multi-module configuration. Initialize Spring Boot backend module (rvGutachten-backend) with Maven/Gradle build file, basic package structure (controllers, services, repositories), and Spring Boot starter dependencies. Create three Angular modules using Angular CLI: rvGutachten.Web (assessors), rvGutachten.Verw (managers), rvGutachten.Admin (admins). Configure each Angular project with basic routing modules and shared component structure. Setup .gitignore files for each module.
+Create root directory with Maven multi-module configuration. Initialize Spring Boot backend module (rvGutachten-backend) with Maven build file, basic package structure (controllers, services, repositories), and Spring Boot starter dependencies. Create three Angular modules using Angular CLI: rvGutachten.Web (assessors), rvGutachten.Verw (managers), rvGutachten.Admin (admins). Configure each Angular project with basic routing modules and shared component structure. Setup .gitignore files for each module.
 
 ## 2. Configure PostgreSQL Database Connection [pending]
 ### Dependencies: 1.1

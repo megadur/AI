@@ -5,7 +5,17 @@
 # Priority: high
 # Description: Create PostgreSQL database schema for assignments, documents, messages, and users with proper relationships and constraints
 # Details:
-1) Create Assignment entity (id, title, status enum, assessorId FK, createdAt, updatedAt), 2) Create Document entity (id, assignmentId FK, fileName, fileUrl, fileSize, uploadedAt, metadata JSON), 3) Create Message entity (id, senderId FK, recipientId FK, assignmentId FK nullable, documentId FK nullable, content, timestamp, isRead), 4) Define proper JPA relationships (@OneToMany, @ManyToOne), 5) Create database migration scripts using Flyway, 6) Add database indexes for performance (user queries, assignment lookups), 7) Implement soft delete functionality where needed, 8) Create repository interfaces for all entities
+1) Create Assessor entity (id, title, status enum, firstname, lastname, createdAt, updatedAt), 
+2) Create Tennant entity (id, name, status enum, firstname, lastname, createdAt, updatedAt), 
+3) Create Assigee entity (id, vsnr, first name, last name, birth date, createdAt, updatedAt), 
+4) Create Assignment entity (id, title, status enum, assessorId FK, assignee FK, tennant FK, assignment date, createdAt, updatedAt), 
+5) Create Document entity (id, assignmentId FK, fileName, fileUrl, fileSize, uploadedAt, metadata JSON), 
+6) Create Message entity (id, senderId FK, recipientId FK, assignmentId FK nullable, documentId FK nullable, content, timestamp, isRead), 
+7) Define proper JPA relationships (@OneToMany, @ManyToOne), 
+8) Create database migration scripts using Flyway, 
+9) Add database indexes for performance (user queries, assignment lookups), 
+10) Implement soft delete functionality where needed, 
+11) Create repository interfaces for all entities
 
 # Test Strategy:
 Database migration tests, repository integration tests, verify foreign key constraints, test data integrity and cascade operations
