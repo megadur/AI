@@ -1,0 +1,17 @@
+Attribut,ID ,Beschreibung des Attributs,Länge,Darstellung,Profile,"Anpassung 
+notwendig 
+Zusätzl.",Partieller XPath
+la_nr,42,"Arztnummer (LANR) der verschreibenden Person 
+sollte keine Arztnummer vorhanden sein, ist „000000000” einzutragen;",9,alphanumerisch,https://fhir.kbv.de/StructureDefinitio n/KBV_PR_FOR_Practitioner,,"fhir:identifier[fhir:system/@value='https://fhir.kbv.de/ NamingSystem/KBV_NS_Base_ANR']/fhir:value 
+{{LANR der Assistenz (Typ 03) – nutzen, falls dieser XPath einen Treffer findet}} 
+fhir:Practitioner/fhir:qualification/fhir:code/fhir:coding [fhir:system/@value='https://fhir.kbv.de/CodeSystem/ KBV_CS_FOR_Qualification_Type' and 
+fhir:code/@value='03']/../../../fhir:identifier[fhir:syste m/@value='https://fhir.kbv.de/NamingSystem/KBV_N S_Base_ANR']/fhir:value 
+{{LANR des Verantwortlichen (Typ 00 oder 04 ) - nutzen falls LANR der Assistenz (Typ 03) nicht gefunden}} 
+fhir:Practitioner/fhir:qualification/fhir:code/fhir:coding [fhir:system/@value='https://fhir.kbv.de/CodeSystem/ KBV_CS_FOR_Qualification_Type' and 
+(fhir:code/@value='00' or 
+fhir:code/@value='04')]/../../../fhir:identifier[fhir:syste m/@value='https://fhir.kbv.de/NamingSystem/KBV_N S_Base_ANR']/fhir:value"
+la_nr_v,52,Arztnummer der verantwortlichen Person,leer oder 9,alphanumerisch,https://fhir.kbv.de/StructureDefinitio n/KBV_PR_FOR_Practitioner,,"fhir:identifier[fhir:system/@value='https://fhir.kbv.de/ NamingSystem/KBV_NS_Base_ANR']/fhir:value 
+{{LANR des Verantwortlichen (Typ 00 oder 04 )- nutzen, falls in Attribut ‚lanr‘ Assistenz (Typ 03) gefunden wird, ansonsten bleibt Attribut leer!}} 
+fhir:Practitioner/fhir:qualification/fhir:code/fhir:coding [fhir:system/@value='https://fhir.kbv.de/CodeSystem/ KBV_CS_FOR_Qualification_Type' and 
+(fhir:code/@value='00' or 
+fhir:code/@value='04')]/../../../fhir:identifier[fhir:syste m/@value='https://fhir.kbv.de/NamingSystem/KBV_N S_Base_ANR']/fhir:value"

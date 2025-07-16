@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyDescriptionAttribute("A C# library for extracting data from German eRezept FHIR XML files")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ff52f33060252080da0bee2b2bcb2e0f9fabfa7a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5d75ed1e1e2e470a0ad0c7999d0cb02436ca5b50")]
 [assembly: System.Reflection.AssemblyProductAttribute("ERezeptExtractor")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ERezeptExtractor")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
