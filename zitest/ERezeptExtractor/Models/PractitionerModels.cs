@@ -81,5 +81,11 @@ namespace ERezeptExtractor.Models
         /// Practitioner/doctor information
         /// </summary>
         public PractitionerInfo Practitioner { get; set; } = new();
+
+        /// <summary>
+        /// Alternative IK number from Coverage payer for accident insurance (UK) or professional associations (BG)
+        /// Extracted from fhir:Coverage with payer type UK or BG
+        /// </summary>
+        public string KostentraegerBG { get; set; } = string.Empty;
     }
 }
