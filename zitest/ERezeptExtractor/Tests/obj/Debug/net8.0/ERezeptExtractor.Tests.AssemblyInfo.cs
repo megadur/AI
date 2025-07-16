@@ -10,13 +10,12 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("Your Name")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("ERezeptExtractor.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
-[assembly: System.Reflection.AssemblyDescriptionAttribute("A C# library for extracting data from German eRezept FHIR XML files")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8caaaed3f75a5a00dcb49f951903b3ab0415fe0c")]
-[assembly: System.Reflection.AssemblyProductAttribute("ERezeptExtractor")]
-[assembly: System.Reflection.AssemblyTitleAttribute("ERezeptExtractor")]
+[assembly: System.Reflection.AssemblyProductAttribute("ERezeptExtractor.Tests")]
+[assembly: System.Reflection.AssemblyTitleAttribute("ERezeptExtractor.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 
 // Von der MSBuild WriteCodeFragment-Klasse generiert.

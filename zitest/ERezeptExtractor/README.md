@@ -1,53 +1,83 @@
-# eRezept Data Extractor
+# ERezeptExtractor
 
-A C# library for extracting structured data from German eRezept FHIR XML files according to the AVD specification.
+A comprehensive C# library for processing German electronic prescriptions (eRezept) and generating TA7 FHIR reports according to AVD specifications and GKVSV standards.
 
 ## Features
 
-- Extract pharmacy information (name, IK number, address)
-- Extract medication dispensing details
-- Extract invoice and billing information including line items
-- Extract Zusatzattribute (additional attributes) for FAM compliance
-- Comprehensive data validation
-- JSON serialization support
-- Summary report generation
+### 📋 eRezept Processing
+- **Data Extraction**: Extract prescription data from German eRezept FHIR XML files
+- **Validation**: Comprehensive validation of prescription data
+- **JSON Export**: Serialize extracted data to JSON format
+- **AVD Compliance**: Follows AVD specification v1.8
+
+### 👨‍⚕️ KBV Practitioner Data
+- **Practitioner Information**: Extract and validate practitioner data according to KBV requirements
+- **LANR Logic**: Specialized logic for Lebenslange Arztnummer (LANR) processing
+- **CSV Integration**: Import requirements from CSV files
+
+### 🧾 TA7 FHIR Reports
+- **Report Generation**: Create TA7 FHIR reports for electronic prescription billing
+- **GKVSV Compliance**: Follows GKVSV standards for health insurance billing
+- **XML Generation**: Generate compliant FHIR XML documents
+- **Validation**: Comprehensive validation with business rules
 
 ## Installation
 
-Add the project reference to your solution or build the NuGet package.
+```bash
+dotnet add package ERezeptExtractor
+```
 
-## Usage
+## Quick Start
 
-### Basic Usage
+### Extract eRezept Data
 
 ```csharp
 using ERezeptExtractor;
-using ERezeptExtractor.Validation;
-using ERezeptExtractor.Serialization;
 
-// Create extractor instance
 var extractor = new ERezeptExtractor();
+var xmlContent = File.ReadAllText("erezept.xml");
 
-// Extract from XML file
-var data = extractor.ExtractFromFile("path/to/eRezeptAbgabedaten.xml");
+// Extract all prescription data
+var prescriptions = extractor.ExtractFromXml(xmlContent);
 
-// Or extract from XML string
-string xmlContent = File.ReadAllText("path/to/file.xml");
-var data = extractor.ExtractFromXml(xmlContent);
+// Export to JSON
+var serializer = new ERezeptSerializer();
+var json = serializer.SerializeToJson(prescriptions);
+```
 
-// Validate the extracted data
-var errors = ERezeptValidator.Validate(data);
-if (errors.Any())
-{
-    foreach (var error in errors)
-    {
-        Console.WriteLine($"Validation Error: {error}");
-    }
-}
+### Generate TA7 Report
 
-// Generate summary report
-var summary = ERezeptSerializer.CreateSummaryReport(data);
-Console.WriteLine(summary);
+```csharp
+using ERezeptExtractor.TA7;
+
+var generator = new TA7FhirReportGenerator();
+
+// Create a sample report
+var report = generator.CreateSampleReport();
+
+// Generate XML
+var xml = generator.GenerateTA7Report(report);
+
+// Validate the report
+var validator = new TA7ReportValidator();
+var errors = validator.ValidateReport(report);
+```
+
+### Process KBV Practitioner Data
+
+```csharp
+using ERezeptExtractor.KBV;
+
+var extractor = new KBVPractitionerExtractor();
+var xmlContent = File.ReadAllText("prescription.xml");
+
+// Extract practitioner data
+var practitionerData = extractor.ExtractKBVData(xmlContent);
+
+// Validate the data
+var validator = new KBVPractitionerValidator();
+var errors = validator.ValidatePractitionerData(practitionerData);
+```
 
 // Save to JSON
 ERezeptSerializer.SaveToJsonFile(data, "output.json");

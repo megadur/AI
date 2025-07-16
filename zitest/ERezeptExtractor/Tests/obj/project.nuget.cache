@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "mtJf8kcVk6E=",
+  "dgSpecHash": "1W1QKnXXKfo=",
   "success": true,
   "projectFilePath": "d:\\data\\code\\_examples\\AI\\zitest\\ERezeptExtractor\\Tests\\ERezeptExtractor.Tests.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\DonTillo\\.nuget\\packages\\coverlet.collector\\6.0.0\\coverlet.collector.6.0.0.nupkg.sha512",
     "C:\\Users\\DonTillo\\.nuget\\packages\\microsoft.codecoverage\\17.8.0\\microsoft.codecoverage.17.8.0.nupkg.sha512",
     "C:\\Users\\DonTillo\\.nuget\\packages\\microsoft.net.test.sdk\\17.8.0\\microsoft.net.test.sdk.17.8.0.nupkg.sha512",
     "C:\\PROGRAM FILES\\DOTNET\\sdk\\NuGetFallbackFolder\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",

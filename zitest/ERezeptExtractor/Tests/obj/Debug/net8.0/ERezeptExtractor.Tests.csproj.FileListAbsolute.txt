@@ -1,0 +1,7 @@
+d:\data\code\_examples\AI\zitest\ERezeptExtractor\Tests\bin\Debug\net8.0\CoverletSourceRootsMapping_ERezeptExtractor.Tests
+d:\data\code\_examples\AI\zitest\ERezeptExtractor\Tests\obj\Debug\net8.0\ERezeptExtractor.Tests.csproj.AssemblyReference.cache
+d:\data\code\_examples\AI\zitest\ERezeptExtractor\Tests\obj\Debug\net8.0\ERezeptExtractor.Tests.GeneratedMSBuildEditorConfig.editorconfig
+d:\data\code\_examples\AI\zitest\ERezeptExtractor\Tests\obj\Debug\net8.0\ERezeptExtractor.Tests.AssemblyInfoInputs.cache
+d:\data\code\_examples\AI\zitest\ERezeptExtractor\Tests\obj\Debug\net8.0\ERezeptExtractor.Tests.AssemblyInfo.cs
+d:\data\code\_examples\AI\zitest\ERezeptExtractor\Tests\obj\Debug\net8.0\ERezeptExtractor.Tests.csproj.CoreCompileInputs.cache
+d:\data\code\_examples\AI\zitest\ERezeptExtractor\Tests\obj\Debug\net8.0\ERezeptExtractor.Tests.sourcelink.json
