@@ -1,8 +1,8 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using ERezeptExtractor.Models;
+using ERezeptAbgabeExtractor.Models;
 
-namespace ERezeptExtractor.Serialization
+namespace ERezeptAbgabeExtractor.Serialization
 {
     /// <summary>
     /// Helper class for serializing eRezept data to various formats
@@ -22,7 +22,7 @@ namespace ERezeptExtractor.Serialization
         /// </summary>
         /// <param name="data">The data to serialize</param>
         /// <returns>JSON string</returns>
-        public static string ToJson(ERezeptData data)
+        public static string ToJson(ERezeptAbgabeData data)
         {
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
@@ -35,12 +35,12 @@ namespace ERezeptExtractor.Serialization
         /// </summary>
         /// <param name="json">The JSON string</param>
         /// <returns>ERezeptData object</returns>
-        public static ERezeptData? FromJson(string json)
+        public static ERezeptAbgabeData? FromJson(string json)
         {
             if (string.IsNullOrWhiteSpace(json))
                 throw new ArgumentException("JSON string cannot be null or empty", nameof(json));
 
-            return JsonConvert.DeserializeObject<ERezeptData>(json, _jsonSettings);
+            return JsonConvert.DeserializeObject<ERezeptAbgabeData>(json, _jsonSettings);
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace ERezeptExtractor.Serialization
         /// </summary>
         /// <param name="data">The data to save</param>
         /// <param name="filePath">The file path</param>
-        public static void SaveToJsonFile(ERezeptData data, string filePath)
+        public static void SaveToJsonFile(ERezeptAbgabeData data, string filePath)
         {
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
@@ -65,7 +65,7 @@ namespace ERezeptExtractor.Serialization
         /// </summary>
         /// <param name="filePath">The file path</param>
         /// <returns>ERezeptData object</returns>
-        public static ERezeptData? LoadFromJsonFile(string filePath)
+        public static ERezeptAbgabeData? LoadFromJsonFile(string filePath)
         {
             if (!File.Exists(filePath))
                 throw new FileNotFoundException($"File not found: {filePath}");
@@ -79,7 +79,7 @@ namespace ERezeptExtractor.Serialization
         /// </summary>
         /// <param name="data">The data to summarize</param>
         /// <returns>Summary string</returns>
-        public static string CreateSummaryReport(ERezeptData data)
+        public static string CreateSummaryReport(ERezeptAbgabeData data)
         {
             if (data == null)
                 throw new ArgumentNullException(nameof(data));

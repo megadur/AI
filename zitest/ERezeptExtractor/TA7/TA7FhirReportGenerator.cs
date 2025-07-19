@@ -1,7 +1,7 @@
 using System.Xml.Linq;
 using System.Text;
 
-namespace ERezeptExtractor.TA7
+namespace ERezeptAbgabeExtractor.TA7
 {
     /// <summary>
     /// Models for TA7 FHIR report generation (German electronic prescription billing)

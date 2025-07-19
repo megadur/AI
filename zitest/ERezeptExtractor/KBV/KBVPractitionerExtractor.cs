@@ -1,8 +1,8 @@
 using System.Xml;
 using System.Xml.XPath;
-using ERezeptExtractor.Models;
+using ERezeptAbgabeExtractor.Models;
 
-namespace ERezeptExtractor.KBV
+namespace ERezeptAbgabeExtractor.KBV
 {
     /// <summary>
     /// Specialized extractor for KBV (Kassenärztliche Bundesvereinigung) practitioner data
@@ -37,10 +37,25 @@ namespace ERezeptExtractor.KBV
             // Extract KBV-specific practitioner data
             ExtractPractitionerData(xmlDoc, data);
             
+            // Extract coverage payer information for kostentr_bg
+            ExtractCoveragePayerData(xmlDoc, data);
+            
             return data;
         }
 
-        private void CopyStandardData(ERezeptData source, ExtendedERezeptData target)
+        /// <summary>
+        /// Extracts practitioner data according to KBV requirements from XML string
+        /// </summary>
+        /// <param name="xmlContent">The FHIR XML content as string</param>
+        /// <returns>Extended eRezept data with practitioner information</returns>
+        public ExtendedERezeptData ExtractKBVData(string xmlContent)
+        {
+            var xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(xmlContent);
+            return ExtractKBVData(xmlDoc);
+        }
+
+        private void CopyStandardData(ERezeptAbgabeData source, ExtendedERezeptData target)
         {
             target.BundleId = source.BundleId;
             target.PrescriptionId = source.PrescriptionId;
@@ -192,6 +207,47 @@ namespace ERezeptExtractor.KBV
                 // If no LANR found, set default value as specified in CSV
                 practitioner.LANR = "000000000";
             }
+        }
+
+        /// <summary>
+        /// Extract coverage payer data for kostentr_bg field
+        /// Looks for Coverage resources with payer type UK or BG and extracts alternative IK number
+        /// </summary>
+        private void ExtractCoveragePayerData(XmlDocument xmlDoc, ExtendedERezeptData data)
+        {
+            // XPath to find Coverage resources with UK or BG payer types
+            var xpath = "//fhir:entry/fhir:resource/fhir:Coverage[" +
+                       "fhir:type/fhir:coding/fhir:system/@value='https://fhir.kbv.de/CodeSystem/KBV_CS_FOR_Payor_Type_KBV' and " +
+                       "(fhir:type/fhir:coding/fhir:code/@value='UK' or fhir:type/fhir:coding/fhir:code/@value='BG')]";
+            
+            var coverageNodes = xmlDoc.SelectNodes(xpath, _namespaceManager);
+            
+            if (coverageNodes != null && coverageNodes.Count > 0)
+            {
+                foreach (XmlNode coverageNode in coverageNodes)
+                {
+                    // Extract alternative IK from the payer identifier extension
+                    var alternativeIK = ExtractAlternativeIK(coverageNode);
+                    if (!string.IsNullOrEmpty(alternativeIK))
+                    {
+                        data.KostentraegerBG = alternativeIK;
+                        break; // Take the first valid alternative IK found
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Extract alternative IK number from Coverage payer identifier extension
+        /// </summary>
+        private string ExtractAlternativeIK(XmlNode coverageNode)
+        {
+            // XPath to find the alternative IK extension
+            var xpath = "fhir:payor/fhir:identifier/fhir:extension[@url='https://fhir.kbv.de/StructureDefinition/KBV_EX_FOR_Alternative_IK']/" +
+                       "fhir:valueIdentifier[fhir:system/@value='http://fhir.de/sid/arge-ik/iknr']/fhir:value/@value";
+            
+            var ikNode = coverageNode.SelectSingleNode(xpath, _namespaceManager);
+            return ikNode?.Value ?? string.Empty;
         }
 
         private string GetAttributeValue(XmlNode node, string xpath)

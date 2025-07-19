@@ -1,6 +1,6 @@
-using ERezeptExtractor.Models;
+using ERezeptAbgabeExtractor.Models;
 
-namespace ERezeptExtractor.Models
+namespace ERezeptAbgabeExtractor.Models
 {
     /// <summary>
     /// Extended model for practitioner information from KBV specifications
@@ -75,7 +75,7 @@ namespace ERezeptExtractor.Models
     /// <summary>
     /// Extended ERezept data model including practitioner information
     /// </summary>
-    public class ExtendedERezeptData : ERezeptData
+    public class ExtendedERezeptData : ERezeptAbgabeData
     {
         /// <summary>
         /// Practitioner/doctor information

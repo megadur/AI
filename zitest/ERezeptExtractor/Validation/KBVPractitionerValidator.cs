@@ -1,6 +1,6 @@
-using ERezeptExtractor.Models;
+using ERezeptAbgabeExtractor.Models;
 
-namespace ERezeptExtractor.Validation
+namespace ERezeptAbgabeExtractor.Validation
 {
     /// <summary>
     /// Validation rules specific to KBV practitioner data

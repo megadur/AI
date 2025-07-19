@@ -1,8 +1,8 @@
 using System.Xml;
 using System.Xml.XPath;
-using ERezeptExtractor.Models;
+using ERezeptAbgabeExtractor.Models;
 
-namespace ERezeptExtractor
+namespace ERezeptAbgabeExtractor
 {
     /// <summary>
     /// Main class for extracting data from eRezept FHIR XML files
@@ -22,7 +22,7 @@ namespace ERezeptExtractor
         /// </summary>
         /// <param name="xmlContent">The XML content as string</param>
         /// <returns>Extracted eRezept data</returns>
-        public ERezeptData ExtractFromXml(string xmlContent)
+        public ERezeptAbgabeData ExtractFromXml(string xmlContent)
         {
             if (string.IsNullOrWhiteSpace(xmlContent))
                 throw new ArgumentException("XML content cannot be null or empty", nameof(xmlContent));
@@ -38,7 +38,7 @@ namespace ERezeptExtractor
         /// </summary>
         /// <param name="filePath">Path to the XML file</param>
         /// <returns>Extracted eRezept data</returns>
-        public ERezeptData ExtractFromFile(string filePath)
+        public ERezeptAbgabeData ExtractFromFile(string filePath)
         {
             if (!File.Exists(filePath))
                 throw new FileNotFoundException($"File not found: {filePath}");
@@ -52,9 +52,9 @@ namespace ERezeptExtractor
         /// </summary>
         /// <param name="xmlDoc">The XML document</param>
         /// <returns>Extracted eRezept data</returns>
-        public ERezeptData ExtractFromXmlDocument(XmlDocument xmlDoc)
+        public ERezeptAbgabeData ExtractFromXmlDocument(XmlDocument xmlDoc)
         {
-            var data = new ERezeptData();
+            var data = new ERezeptAbgabeData();
 
             // Extract Bundle level information
             ExtractBundleInfo(xmlDoc, data);
@@ -71,7 +71,7 @@ namespace ERezeptExtractor
             return data;
         }
 
-        private void ExtractBundleInfo(XmlDocument xmlDoc, ERezeptData data)
+        private void ExtractBundleInfo(XmlDocument xmlDoc, ERezeptAbgabeData data)
         {
             var bundleNode = xmlDoc.SelectSingleNode("//fhir:Bundle", _namespaceManager);
             if (bundleNode != null)
@@ -92,7 +92,7 @@ namespace ERezeptExtractor
             }
         }
 
-        private void ExtractPharmacyInfo(XmlDocument xmlDoc, ERezeptData data)
+        private void ExtractPharmacyInfo(XmlDocument xmlDoc, ERezeptAbgabeData data)
         {
             var organizationNode = xmlDoc.SelectSingleNode("//fhir:entry/fhir:resource/fhir:Organization", _namespaceManager);
             if (organizationNode != null)
@@ -138,7 +138,7 @@ namespace ERezeptExtractor
             }
         }
 
-        private void ExtractMedicationDispenseInfo(XmlDocument xmlDoc, ERezeptData data)
+        private void ExtractMedicationDispenseInfo(XmlDocument xmlDoc, ERezeptAbgabeData data)
         {
             var medicationDispenseNode = xmlDoc.SelectSingleNode("//fhir:entry/fhir:resource/fhir:MedicationDispense", _namespaceManager);
             if (medicationDispenseNode != null)
@@ -166,7 +166,7 @@ namespace ERezeptExtractor
             }
         }
 
-        private void ExtractInvoiceInfo(XmlDocument xmlDoc, ERezeptData data)
+        private void ExtractInvoiceInfo(XmlDocument xmlDoc, ERezeptAbgabeData data)
         {
             var invoiceNode = xmlDoc.SelectSingleNode("//fhir:entry/fhir:resource/fhir:Invoice", _namespaceManager);
             if (invoiceNode != null)

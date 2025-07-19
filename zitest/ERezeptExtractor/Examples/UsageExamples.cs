@@ -1,8 +1,8 @@
-using ERezeptExtractor;
-using ERezeptExtractor.Validation;
-using ERezeptExtractor.Serialization;
+using ERezeptAbgabeExtractor;
+using ERezeptAbgabeExtractor.Validation;
+using ERezeptAbgabeExtractor.Serialization;
 
-namespace ERezeptExtractor.Examples
+namespace ERezeptAbgabeExtractor.Examples
 {
     /// <summary>
     /// Example usage of the ERezeptExtractor library

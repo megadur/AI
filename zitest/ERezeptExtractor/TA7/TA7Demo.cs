@@ -1,7 +1,7 @@
-using ERezeptExtractor.TA7;
+using ERezeptAbgabeExtractor.TA7;
 using System.Text;
 
-namespace ERezeptExtractor.Demo
+namespace ERezeptAbgabeExtractor.Demo
 {
     /// <summary>
     /// Demo application for TA7 FHIR report generation

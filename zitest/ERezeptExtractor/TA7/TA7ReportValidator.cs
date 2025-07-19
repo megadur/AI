@@ -3,7 +3,7 @@ using System.Xml.Schema;
 using System.Text.RegularExpressions;
 using System.Text;
 
-namespace ERezeptExtractor.TA7
+namespace ERezeptAbgabeExtractor.TA7
 {
     /// <summary>
     /// Validation service for TA7 FHIR reports

@@ -1,9 +1,9 @@
-namespace ERezeptExtractor.Models
+namespace ERezeptAbgabeExtractor.Models
 {
     /// <summary>
     /// Represents the extracted data from an eRezept FHIR Bundle
     /// </summary>
-    public class ERezeptData
+    public class ERezeptAbgabeData
     {
         public string BundleId { get; set; } = string.Empty;
         public string PrescriptionId { get; set; } = string.Empty;

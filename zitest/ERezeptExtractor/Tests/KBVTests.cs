@@ -51,8 +51,8 @@ namespace ERezeptExtractor.Tests
                 Name = new PractitionerNameInfo { Family = "Test", Given = "Doctor" },
                 Qualifications = new List<QualificationInfo>
                 {
-                    new() { TypeCode = "03", Text = "Assistant", LANR = "123456789" },
-                    new() { TypeCode = "00", Text = "Responsible", LANR = "987654321" }
+                    new() { TypeCode = "03", TypeDisplay = "Assistant", AssociatedLANR = "123456789" },
+                    new() { TypeCode = "00", TypeDisplay = "Responsible", AssociatedLANR = "987654321" }
                 }
             };
 
@@ -75,7 +75,7 @@ namespace ERezeptExtractor.Tests
                 Name = new PractitionerNameInfo { Family = "Test", Given = "Doctor" },
                 Qualifications = new List<QualificationInfo>
                 {
-                    new() { TypeCode = "00", Text = "Responsible", LANR = "987654321" }
+                    new() { TypeCode = "00", TypeDisplay = "Responsible", AssociatedLANR = "987654321" }
                 }
             };
 
@@ -98,7 +98,7 @@ namespace ERezeptExtractor.Tests
                 Name = new PractitionerNameInfo { Family = "Test", Given = "Doctor" },
                 Qualifications = new List<QualificationInfo>
                 {
-                    new() { TypeCode = "05", Text = "Other", LANR = "" }
+                    new() { TypeCode = "05", TypeDisplay = "Other", AssociatedLANR = "" }
                 }
             };
 
@@ -121,7 +121,7 @@ namespace ERezeptExtractor.Tests
                 Name = new PractitionerNameInfo { Family = "Test", Given = "Doctor" },
                 Qualifications = new List<QualificationInfo>
                 {
-                    new() { TypeCode = "04", Text = "Responsible Doctor", LANR = "111222333" }
+                    new() { TypeCode = "04", TypeDisplay = "Responsible Doctor", AssociatedLANR = "111222333" }
                 }
             };
 
@@ -144,9 +144,9 @@ namespace ERezeptExtractor.Tests
                 Name = new PractitionerNameInfo { Family = "Test", Given = "Doctor" },
                 Qualifications = new List<QualificationInfo>
                 {
-                    new() { TypeCode = "03", Text = "Assistant 1", LANR = "111111111" },
-                    new() { TypeCode = "03", Text = "Assistant 2", LANR = "222222222" },
-                    new() { TypeCode = "00", Text = "Responsible", LANR = "333333333" }
+                    new() { TypeCode = "03", TypeDisplay = "Assistant 1", AssociatedLANR = "111111111" },
+                    new() { TypeCode = "03", TypeDisplay = "Assistant 2", AssociatedLANR = "222222222" },
+                    new() { TypeCode = "00", TypeDisplay = "Responsible", AssociatedLANR = "333333333" }
                 }
             };
 
@@ -226,7 +226,7 @@ namespace ERezeptExtractor.Tests
             data.Practitioner.Qualifications.Add(new QualificationInfo 
             { 
                 TypeCode = "99", 
-                Text = "Unknown" 
+                TypeDisplay = "Unknown" 
             });
 
             // Act
@@ -245,8 +245,8 @@ namespace ERezeptExtractor.Tests
             data.Practitioner.Qualifications.Add(new QualificationInfo 
             { 
                 TypeCode = "03", 
-                Text = "Assistant",
-                LANR = "123456789"
+                TypeDisplay = "Assistant",
+                AssociatedLANR = "123456789"
             });
             data.Practitioner.LANR_Responsible = null;
 
@@ -275,11 +275,9 @@ namespace ERezeptExtractor.Tests
         {
             return new ExtendedERezeptData
             {
-                Bundle = new BundleInfo
-                {
-                    Id = "test-bundle",
-                    Timestamp = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
-                },
+                BundleId = "test-bundle",
+                PrescriptionId = "test-prescription",
+                Timestamp = DateTime.Now,
                 Pharmacy = new PharmacyInfo
                 {
                     Name = "Test Pharmacy",
@@ -294,16 +292,19 @@ namespace ERezeptExtractor.Tests
                 },
                 Invoice = new InvoiceInfo
                 {
-                    InvoiceNumber = "TEST-001",
-                    Date = DateTime.Now.ToString("yyyy-MM-dd"),
+                    Id = "TEST-001",
+                    Status = "completed",
+                    TotalGross = 10.50m,
+                    Currency = "EUR",
                     LineItems = new List<LineItemInfo>
                     {
                         new()
                         {
+                            Sequence = 1,
                             PZN = "12345678",
-                            Medication = "Test Medication",
-                            Quantity = 1,
-                            Price = 10.50m
+                            Amount = 10.50m,
+                            Currency = "EUR",
+                            VatRate = 0.19m
                         }
                     }
                 },
@@ -320,8 +321,8 @@ namespace ERezeptExtractor.Tests
                         new()
                         {
                             TypeCode = "00",
-                            Text = "Arzt",
-                            LANR = "123456789"
+                            TypeDisplay = "Arzt",
+                            AssociatedLANR = "123456789"
                         }
                     }
                 }

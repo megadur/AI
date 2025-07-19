@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("rvgbackend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+68a794dfa64ffe741e7b7d087150479da497f6f5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4a6738519c689797f3dda614115e83c172f8fbb4")]
 [assembly: System.Reflection.AssemblyProductAttribute("rvgbackend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("rvgbackend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

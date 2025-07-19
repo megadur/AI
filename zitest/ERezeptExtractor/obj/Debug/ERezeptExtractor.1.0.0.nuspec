@@ -5,7 +5,7 @@
     <version>1.0.0</version>
     <authors>Your Name</authors>
     <description>A C# library for extracting data from German eRezept FHIR XML files</description>
-    <repository type="git" commit="8caaaed3f75a5a00dcb49f951903b3ab0415fe0c" />
+    <repository type="git" commit="4a6738519c689797f3dda614115e83c172f8fbb4" />
     <dependencies>
       <group targetFramework="net8.0">
         <dependency id="Newtonsoft.Json" version="13.0.3" exclude="Build,Analyzers" />

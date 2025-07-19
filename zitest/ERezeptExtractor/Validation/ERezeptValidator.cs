@@ -1,6 +1,6 @@
-using ERezeptExtractor.Models;
+using ERezeptAbgabeExtractor.Models;
 
-namespace ERezeptExtractor.Validation
+namespace ERezeptAbgabeExtractor.Validation
 {
     /// <summary>
     /// Validation helper for eRezept data
@@ -12,7 +12,7 @@ namespace ERezeptExtractor.Validation
         /// </summary>
         /// <param name="data">The data to validate</param>
         /// <returns>List of validation errors</returns>
-        public static List<string> Validate(ERezeptData data)
+        public static List<string> Validate(ERezeptAbgabeData data)
         {
             var errors = new List<string>();
 

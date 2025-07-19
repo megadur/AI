@@ -6,6 +6,45 @@ namespace ERezeptExtractor.Demo
     {
         static async Task Main(string[] args)
         {
+            Console.WriteLine("=== eRezept Extractor Demo Suite ===");
+            Console.WriteLine();
+            Console.WriteLine("Select demo to run:");
+            Console.WriteLine("1. TA7 FHIR Report Generator Demo");
+            Console.WriteLine("2. Verordnung (Prescription) Extractor Demo");
+            Console.WriteLine("3. Run All Demos");
+            Console.WriteLine();
+            Console.Write("Enter selection (1-3): ");
+            
+            var selection = Console.ReadLine();
+            Console.WriteLine();
+
+            switch (selection)
+            {
+                case "1":
+                    RunTA7Demo();
+                    break;
+                case "2":
+                    VerordnungDemo.RunDemo();
+                    break;
+                case "3":
+                    RunTA7Demo();
+                    Console.WriteLine("\n" + new string('=', 80) + "\n");
+                    VerordnungDemo.RunDemo();
+                    break;
+                default:
+                    Console.WriteLine("Invalid selection. Running all demos...");
+                    RunTA7Demo();
+                    Console.WriteLine("\n" + new string('=', 80) + "\n");
+                    VerordnungDemo.RunDemo();
+                    break;
+            }
+
+            Console.WriteLine("\nPress any key to exit...");
+            Console.ReadKey();
+        }
+
+        private static void RunTA7Demo()
+        {
             Console.WriteLine("=== TA7 FHIR Report Generator Demo ===");
             Console.WriteLine();
 
