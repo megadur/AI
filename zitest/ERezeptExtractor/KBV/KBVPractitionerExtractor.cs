@@ -7,6 +7,18 @@ namespace ERezeptAbgabeExtractor.KBV
     /// <summary>
     /// Specialized extractor for KBV (Kassenärztliche Bundesvereinigung) practitioner data
     /// Based on requirements from "Rezepte - Tabellenblatt10.csv"
+    /// 
+    /// Implements extraction logic for:
+    /// - la_nr (ID 42): Doctor number of prescribing person
+    /// - la_nr_v (ID 52): Doctor number of responsible person
+    /// 
+    /// la_nr_v Logic:
+    /// - Attribut: la_nr_v, ID: 52
+    /// - Beschreibung: Arztnummer der verantwortlichen Person
+    /// - Länge: leer oder 9, Typ: alphanumerisch
+    /// - XPATH: fhir:identifier[fhir:system/@value='https://fhir.kbv.de/NamingSystem/KBV_NS_Base_ANR']/fhir:value
+    /// - Logic: LANR des Verantwortlichen (Typ 00 oder 04) - nutzen, falls in Attribut 'lanr' Assistenz (Typ 03) 
+    ///   gefunden wird, ansonsten bleibt Attribut leer!
     /// </summary>
     public class KBVPractitionerExtractor
     {
@@ -84,6 +96,39 @@ namespace ERezeptAbgabeExtractor.KBV
                 
                 // Apply KBV-specific logic for LANR assignment
                 ApplyKBVLANRLogic(data);
+                
+                // Alternative: Use direct XPath extraction for validation
+                ValidateWithDirectXPath(xmlDoc, data);
+            }
+        }
+
+        /// <summary>
+        /// Validate LANR extraction using direct XPath as specified in the requirements
+        /// This implements the exact XPath from la_nr_v (ID 52) specification
+        /// </summary>
+        private void ValidateWithDirectXPath(XmlDocument xmlDoc, ExtendedERezeptData data)
+        {
+            // Extract assistant LANR using direct XPath
+            var assistantLANR = ExtractAssistantPersonLANR(xmlDoc);
+            
+            // Extract responsible person LANR using direct XPath  
+            var responsibleLANR = ExtractResponsiblePersonLANR(xmlDoc);
+            
+            // Apply la_nr_v logic: Use responsible LANR only if assistant LANR is used for la_nr
+            if (!string.IsNullOrEmpty(assistantLANR))
+            {
+                // Assistant found - ensure la_nr uses assistant LANR and la_nr_v uses responsible LANR
+                data.Practitioner.LANR = assistantLANR;
+                if (!string.IsNullOrEmpty(responsibleLANR))
+                {
+                    data.Practitioner.LANR_Responsible = responsibleLANR;
+                }
+            }
+            else if (!string.IsNullOrEmpty(responsibleLANR))
+            {
+                // Only responsible found - use for la_nr, leave la_nr_v empty
+                data.Practitioner.LANR = responsibleLANR;
+                data.Practitioner.LANR_Responsible = string.Empty;
             }
         }
 
@@ -131,13 +176,17 @@ namespace ERezeptAbgabeExtractor.KBV
                     {
                         qualification.TypeCode = GetAttributeValue(codeNode, "fhir:code/@value");
                         qualification.TypeDisplay = GetAttributeValue(codeNode, "fhir:display/@value");
-                    }
-                    
-                    // Extract associated LANR
-                    var lanrNode = practitionerNode.SelectSingleNode("fhir:identifier[fhir:system/@value='https://fhir.kbv.de/NamingSystem/KBV_NS_Base_ANR']", _namespaceManager);
-                    if (lanrNode != null)
-                    {
-                        qualification.AssociatedLANR = GetAttributeValue(lanrNode, "fhir:value/@value");
+                        
+                        // Extract associated LANR - use more specific XPath for each qualification type
+                        // This implements the logic for la_nr_v (ID 52) according to KBV requirements
+                        if (qualification.TypeCode == "00" || qualification.TypeCode == "03" || qualification.TypeCode == "04")
+                        {
+                            var lanrNode = practitionerNode.SelectSingleNode("fhir:identifier[fhir:system/@value='https://fhir.kbv.de/NamingSystem/KBV_NS_Base_ANR']", _namespaceManager);
+                            if (lanrNode != null)
+                            {
+                                qualification.AssociatedLANR = GetAttributeValue(lanrNode, "fhir:value/@value");
+                            }
+                        }
                     }
                     
                     practitioner.Qualifications.Add(qualification);
@@ -174,6 +223,7 @@ namespace ERezeptAbgabeExtractor.KBV
 
         /// <summary>
         /// Apply KBV-specific logic for LANR assignment according to CSV requirements
+        /// Implements la_nr (ID 42) and la_nr_v (ID 52) extraction logic
         /// </summary>
         private void ApplyKBVLANRLogic(ExtendedERezeptData data)
         {
@@ -187,11 +237,15 @@ namespace ERezeptAbgabeExtractor.KBV
             
             // Apply logic according to CSV requirements:
             // la_nr (ID 42): Use assistant LANR if available, otherwise use responsible LANR
+            // la_nr_v (ID 52): LANR of responsible person - only filled if assistant is found in la_nr
             if (assistantQual != null && !string.IsNullOrEmpty(assistantQual.AssociatedLANR))
             {
+                // Assistant found - use assistant LANR for la_nr (ID 42)
                 practitioner.LANR = assistantQual.AssociatedLANR;
                 
-                // la_nr_v (ID 52): If assistant found, use responsible LANR for la_nr_v
+                // la_nr_v (ID 52): Use responsible LANR for la_nr_v when assistant is in la_nr
+                // XPath: fhir:Practitioner/fhir:qualification/fhir:code/fhir:coding[fhir:system/@value='https://fhir.kbv.de/CodeSystem/KBV_CS_FOR_Qualification_Type' 
+                // and (fhir:code/@value='00' or fhir:code/@value='04')]/../../../fhir:identifier[fhir:system/@value='https://fhir.kbv.de/NamingSystem/KBV_NS_Base_ANR']/fhir:value
                 if (responsibleQual != null && !string.IsNullOrEmpty(responsibleQual.AssociatedLANR))
                 {
                     practitioner.LANR_Responsible = responsibleQual.AssociatedLANR;
@@ -199,13 +253,16 @@ namespace ERezeptAbgabeExtractor.KBV
             }
             else if (responsibleQual != null && !string.IsNullOrEmpty(responsibleQual.AssociatedLANR))
             {
+                // No assistant found - use responsible LANR for la_nr (ID 42)
                 practitioner.LANR = responsibleQual.AssociatedLANR;
-                // la_nr_v remains empty if no assistant was found
+                // la_nr_v (ID 52) remains empty when no assistant is found
+                practitioner.LANR_Responsible = string.Empty;
             }
             else
             {
                 // If no LANR found, set default value as specified in CSV
                 practitioner.LANR = "000000000";
+                practitioner.LANR_Responsible = string.Empty;
             }
         }
 
@@ -248,6 +305,36 @@ namespace ERezeptAbgabeExtractor.KBV
             
             var ikNode = coverageNode.SelectSingleNode(xpath, _namespaceManager);
             return ikNode?.Value ?? string.Empty;
+        }
+
+        /// <summary>
+        /// Extract LANR of responsible person (Type 00 or 04) according to la_nr_v (ID 52) specification
+        /// XPath: fhir:Practitioner/fhir:qualification/fhir:code/fhir:coding[fhir:system/@value='https://fhir.kbv.de/CodeSystem/KBV_CS_FOR_Qualification_Type' 
+        /// and (fhir:code/@value='00' or fhir:code/@value='04')]/../../../fhir:identifier[fhir:system/@value='https://fhir.kbv.de/NamingSystem/KBV_NS_Base_ANR']/fhir:value
+        /// </summary>
+        private string ExtractResponsiblePersonLANR(XmlDocument xmlDoc)
+        {
+            var xpath = "//fhir:entry/fhir:resource/fhir:Practitioner[fhir:qualification/fhir:code/fhir:coding[" +
+                       "fhir:system/@value='https://fhir.kbv.de/CodeSystem/KBV_CS_FOR_Qualification_Type' and " +
+                       "(fhir:code/@value='00' or fhir:code/@value='04')]]/fhir:identifier[" +
+                       "fhir:system/@value='https://fhir.kbv.de/NamingSystem/KBV_NS_Base_ANR']/fhir:value/@value";
+            
+            var lanrNode = xmlDoc.SelectSingleNode(xpath, _namespaceManager);
+            return lanrNode?.Value ?? string.Empty;
+        }
+
+        /// <summary>
+        /// Extract LANR of assistant person (Type 03) for la_nr (ID 42)
+        /// </summary>
+        private string ExtractAssistantPersonLANR(XmlDocument xmlDoc)
+        {
+            var xpath = "//fhir:entry/fhir:resource/fhir:Practitioner[fhir:qualification/fhir:code/fhir:coding[" +
+                       "fhir:system/@value='https://fhir.kbv.de/CodeSystem/KBV_CS_FOR_Qualification_Type' and " +
+                       "fhir:code/@value='03']]/fhir:identifier[" +
+                       "fhir:system/@value='https://fhir.kbv.de/NamingSystem/KBV_NS_Base_ANR']/fhir:value/@value";
+            
+            var lanrNode = xmlDoc.SelectSingleNode(xpath, _namespaceManager);
+            return lanrNode?.Value ?? string.Empty;
         }
 
         private string GetAttributeValue(XmlNode node, string xpath)
