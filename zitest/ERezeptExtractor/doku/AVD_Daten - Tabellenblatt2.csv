@@ -1,0 +1,324 @@
+Attribut,ID ,Beschreibung des Attributs,Länge,Darstellung,Profile,"Anpassung notwendig Zusätzl.",Partieller XPath
+la_nr,42,"Arztnummer (LANR) der verschreibenden Person sollte keine Arztnummer vorhanden sein, ist „000000000” einzutragen;",9,alphanumerisch,https://fhir.kbv.de/StructureDefinition/KBV_PR_FOR_Practitioner,,"fhir:identifier[fhir:system/@value='https://fhir.kbv.de/ NamingSystem/KBV_NS_Base_ANR']/fhir:value 
+{{LANR der Assistenz (Typ 03) nutzen, falls dieser XPath einen Treffer findet}} 
+fhir:Practitioner/fhir:qualification/fhir:code/fhir:coding [fhir:system/@value='https://fhir.kbv.de/CodeSystem/KBV_CS_FOR_Qualification_Type' and 
+fhir:code/@value='03']/../../../fhir:identifier[fhir:syste m/@value='https://fhir.kbv.de/NamingSystem/KBV_NS_Base_ANR']/fhir:value 
+{{LANR des Verantwortlichen (Typ 00 oder 04 ) nutzen falls LANR der Assistenz (Typ 03) nicht gefunden}} 
+fhir:Practitioner/fhir:qualification/fhir:code/fhir:coding [fhir:system/@value='https://fhir.kbv.de/CodeSystem/KBV_CS_FOR_Qualification_Type' and 
+(fhir:code/@value='00' or 
+fhir:code/@value='04')]/../../../fhir:identifier[fhir:syste m/@value='https://fhir.kbv.de/NamingSystem/KBV_NS_Base_ANR']/fhir:value"
+la_nr_v,52,Arztnummer der verantwortlichen Person,leer oder 9,alphanumerisch,https://fhir.kbv.de/StructureDefinition/KBV_PR_FOR_Practitioner,,"fhir:identifier[fhir:system/@value='https://fhir.kbv.de/ NamingSystem/KBV_NS_Base_ANR']/fhir:value 
+{{LANR des Verantwortlichen (Typ 00 oder 04 )- nutzen, falls in Attribut ‚lanr‘ Assistenz (Typ 03) gefunden wird, ansonsten bleibt Attribut leer!}} 
+fhir:Practitioner/fhir:qualification/fhir:code/fhir:coding [fhir:system/@value='https://fhir.kbv.de/CodeSystem/KBV_CS_FOR_Qualification_Type' and 
+(fhir:code/@value='00' or 
+fhir:code/@value='04')]/../../../fhir:identifier[fhir:syste m/@value='https://fhir.kbv.de/NamingSystem/KBV_NS_Base_ANR']/fhir:value"
+bs_nr,61,"Betriebsstättennummer (BSNR) Sofern ein Krankenhaus über keine BSNR verfügt, kann das Krankenhaus-IK eingetragen werden. Sofern auch kein Krankenhaus-IK eingetragen ist, soll die Standortnummer eingetragen werden, ansonsten der Wert „0“",9,alphanumerisch,https://fhir.kbv.de/StructureDefinition/KBV_PR_FOR_Organization,,"{{Arzt}} 
+fhir:identifier[fhir:system/@value='https://fhir.kbv.de/ NamingSystem/KBV_NS_Base_BSNR']/fhir:value 
+{{Krankenhaus}} 
+fhir:identifier[fhir:system/@value='http://fhir.de/sid/a rge-ik/iknr' or 
+fhir:system/@value='http://fhir.de/NamingSystem/arg e-ik/iknr']/fhir:value"
+asv_nr,43,"ASV-Teamnummer, sofern es sich um eine Verordnung im Rahmen der ASV handelt (9-stellig); wenn keine ASV-Teamnummer vorhanden ist, bleibt dieses Feld leer (NULL)","leer 
+oder 
+9",alphanumerisch,https://fhir.kbv.de/StructureDefinition/KBV_PR_FOR_PractitionerRole,,fhir:organization/fhir:identifier[fhir:system/@value='h ttp://fhir.de/NamingSystem/asv/teamnummer']/fhir:v alue
+pat_nr,19,Versichertennummer,..12,alphanumerisch,https://fhir.kbv.de/StructureDefinition/KBV_PR_FOR_Patient,,"fhir:Patient/fhir:identifier[fhir:system/@value='http:// fhir.de/sid/gkv/kvid-10' or 
+fhir:system/@value='http://fhir.de/NamingSystem/gk v/kvid-10']/fhir:value"
+pat_geb,25,"Geburtsjahr und –monat des Versicherten in dem Format „JJJJMM“; falls nicht vorhanden = ‘000000’",6,alphanumerisch,https://fhir.kbv.de/StructureDefinition/KBV_PR_FOR_Patient,x,fhir:Patient/fhir:birthDate
+pat_vorname,20,"Vorname des Versicherten Wird durch die Software gelöscht, wenn eine Versichertennummer vorhanden ist",..45,alphanumerisch,https://fhir.kbv.de/StructureDefinition/KBV_PR_FOR_Patient,,fhir:Patient/fhir:name/fhir:given
+pat_nachnam e,21,"Nachname des Versicherten Wird durch die Software gelöscht, wenn eine Versichertennummer vorhanden ist",..45,alphanumerisch,https://fhir.kbv.de/StructureDefinition/KBV_PR_FOR_Patient,,fhir:Patient/fhir:name/fhir:family
+rezept_id,5,Dokumenten-ID,22,alphanumerisch,https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Bundle,,"fhir:identifier[fhir:system/@value='https://gematik.de /fhir/erp/NamingSystem/GEM_ERP_NS_PrescriptionId ' or 
+fhir:system/@value='https://gematik.de/fhir/NamingS ystem/PrescriptionID']/fhir:value"
+kostentr_ik1,9,IK der zuständigen Krankenkasse lt. eGK,9,numerisch,https://fhir.kbv.de/StructureDefinition/KBV_PR_FOR_Coverage,,"fhir:payor/fhir:identifier[fhir:system/@value='http://fhir.de/sid/arge-ik/iknr' or 
+fhir:system/@value='http://fhir.de/NamingSystem/arge-ik/iknr']/fhir:value"
+kostentr_bg,10,"IK des Kostenträgers, im Fall von BG oder UK",leer oder 9,alphanumerisch,https://fhir.kbv.de/StructureDefinition/KBV_PR_FOR_Coverage,,"{{Für UK in Beispieldaten enthalten, für BG nicht in den Beispieldaten enthalten}} 
+fhir:Coverage[fhir:type/fhir:coding/fhir:system/@value='https://fhir.kbv.de/CodeSystem/KBV_CS_FOR_Payo r_Type_KBV' and 
+(fhir:type/fhir:coding/fhir:code/@value='UK' or fhir:type/fhir:coding/fhir:code/@value='BG')]/fhir:pay or/fhir:identifier/fhir:extension[@url='https://fhir.kbv. de/StructureDefinition/KBV_EX_FOR_Alternative_IK']/ fhir:valueIdentifier[fhir:system/@value='http://fhir.de /sid/arge-ik/iknr']/fhir:value"
+vers_wop,12,"Wohnortprinzip des Versicherten Software setzt Kennzeichnung in “Eigen KV“ oder „Fremd-KV“ um. Es werden keine detaillierten Ausprägungen geliefert.","leer 
+oder 
+2",alphanumerisch,https://fhir.kbv.de/StructureDefinition/KBV_PR_FOR_Coverage,,fhir:extension[@url='http://fhir.de/StructureDefinition/gkv/wop']/fhir:valueCoding/fhir:code
+vers_status,14,"Versichertenart 
+0 = keine Angabe 
+1 = Mitglieder 
+3 = Familienangehörige 
+5 = Rentner",1,alphanumerisch,https://fhir.kbv.de/StructureDefinition/KBV_PR_FOR_Coverage,,fhir:extension[@url='http://fhir.de/StructureDefinition/gkv/versichertenart']/fhir:valueCoding/fhir:code
+bes_persongr,15,"Besondere Personengruppe 
+00 = nicht gesetzt 
+04 = SOZ 
+06 = BVG 
+07 = SVA1 
+08 = SVA2 
+09 = ASY",2,alphanumerisch,https://fhir.kbv.de/StructureDefinition/KBV_PR_FOR_Coverage,,"fhir:extension[@url='http://fhir.de/StructureDefinition/gkv/besondere 
+personengruppe']/fhir:valueCoding/fhir:code"
+dmp_status,16,"DMP-Kennzeichen 
+00 = nicht gesetzt 
+01 = DM2 
+02 = BRK 
+03 = KHK 
+04 = DM1 
+05 = Asthma 
+06 = COPD 
+07 = HI 
+08 = Depression 
+09 = Rückenschmerz 
+10 = Rheuma 
+11 = Osteoporose 
+12 = Adipositas 
+30 = DM2 und KHK 
+31 = Asthma und DM2 
+32 = COPD und DM2 
+33 = COPD und KHK 
+34 = COPD. DM2 und KHK 
+35 = Asthma und KHK 
+36 = Asthma, DM2 und KHK 
+37 = Brustkrebs und DM2 
+38 = DM1 und KHK 
+39 = Asthma und DM1 
+40 = Asthma und Brustkrebs 
+41 = Brustkrebs und KHK 
+42 = Brustkrebs und COPD",2,alphanumerisch,https://fhir.kbv.de/StructureDefinition/KBV_PR_FOR_Coverage,,fhir:extension[@url='http://fhir.de/StructureDefinition/gkv/dmp-kennzeichen']/fhir:valueCoding/fhir:code
+,,"43 = COPD und DM1 
+44 = Brustkrebs, DM2 und KHK 
+45 = Asthma, Brustkrebs und DM2 46 = Brustkrebs und DM1 
+47 = COPD, DM1 und KHK 
+48 = Brustkrebs, COPD und DM2 
+49 = Asthma, DM1 und KHK 
+50 = Asthma, Brustkrebs und KHK 51 = Brustkrebs, COPD und KHK 
+52 = Brustkrebs, COPD, DM2 und KHK 53 = Asthma, Brustkrebs, DM2 und KHK 54 = Brustkrebs, DM1 und KHK 
+55 = Asthma, Brustkrebs und DM1 56 = Asthma, Brustkrebs, DM1 und KHK 57 = Brustkrebs, COPD und DM1 
+58 = Brustkrebs, COPD, DM1 und KHK",,,,,
+rechts_kn,17,"Kennzeichen Rechtsgrundlage 
+01 = ASV 
+11 = ASV mit 
+Ersatzverordnungskennzeichen 
+07 = Terminservice 
+17 = Terminservice mit 
+Ersatzverordnungskennzeichen 
+04 = Entlass-Management 
+14 = Entlass-Management mit 
+Ersatzverordnungskennzeichen 
+10 = nur Ersatzverordnungskennzeichen 00 = ohne Ersatzverordnungskennzeichen",2,alphanumerisch,https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Composition,,fhir:extension[@url='https://fhir.kbv.de/StructureDefi nition/KBV_EX_FOR_Legal_basis']/fhir:valueCoding/fhi r:code
+unfall,73,"Kennzeichnung Unfall, Schlüssel: 
+1 = Unfall 
+2 = Arbeitsunfall 
+4 = Berufskrankheit 
+Wenn Kennzeichnung „1“, „2“ oder „4“",leer oder 1,alphanumerisch,https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Prescription,,"fhir:extension[@url='https://fhir.kbv.de/StructureDefinition/KBV_EX_FOR_Accident' or 
+@url='https://fhir.kbv.de/StructureDefinition/KBV_EX _ERP_Accident']/fhir:extension[@url='Unfallkennzeich en']/fhir:valueCoding/fhir:code"
+,,"gesetzt ist, werden durch die Software die Versichertendaten gelöscht.",,,,,
+geb_befr,77,"Kennzeichnung Gebührenbefreiung, Schlüssel: 
+0 = nein 
+1 = ja 
+2 = künstliche Befruchtung",1,numerisch,https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Prescription,,fhir:extension[@url='https://fhir.kbv.de/StructureDefinition/KBV_EX_FOR_StatusCoPayment' or @url='https://fhir.kbv.de/StructureDefinition/KBV_EX _ERP_StatusCoPayment']/fhir:valueCoding/fhir:code
+v_datum,80,Ausstellungsdatum der Verordnung in dem Format „JJJJMMTT“,8,numerisch,https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Prescription,x,fhir:authoredOn
+v_kategorie,81,"Kennzeichen der Verordnungskategorie 00 = AM 
+01 = BtM 
+02 = T-Rezept",2,alphanumerisch,"https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_PZN 
+https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_Ingredie nt 
+https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_Compou nding 
+https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_FreeText",,"{{Medication}} 
+fhir:extension[@url='https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Category']/fhir:value Coding/fhir:code 
+{{Medication_Ingredient}} 
+fhir:extension[@url='https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Category']/fhir:value Coding/fhir:code 
+{{Medication_Compounding}} 
+fhir:extension[@url='https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Category']/fhir:value Coding/fhir:code 
+{{Medication_FreeText}} 
+fhir:extension[@url='https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Category']/fhir:value Coding/fhir:code"
+noctu,82,"Abgabe im Notdienst erforderlich, Schlüssel: 
+0 = nein 
+1 = ja",1,numerisch,https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Prescription,x,fhir:extension[@url='https://fhir.kbv.de/StructureDefi nition/KBV_EX_ERP_EmergencyServicesFee']/fhir:valu eBoolean
+spr,83,Kennzeichnung Sprechstundenbedarf bleibt bis zur Implementierung leer,leer oder 1,alphanumerisch,,,{{Kein XPath vorhanden!}}
+impf,84,"Impfstoffkennzeichnung 
+0 = kein Impfstoff 
+1 = Impfstoff",1,numerisch,"https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_PZN 
+https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_Ingredient 
+https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_Compounding 
+https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_FreeText",x,"{{Medication_PZN}} 
+fhir:extension[@url='https://fhir.kbv.de/StructureDefi nition/KBV_EX_ERP_Medication_Vaccine']/fhir:valueBoolean 
+{{Medication_Ingredient}} 
+fhir:extension[@url='https://fhir.kbv.de/StructureDefi nition/KBV_EX_ERP_Medication_Vaccine']/fhir:valueBoolean 
+{{Medication_Compounding}} 
+fhir:extension[@url='https://fhir.kbv.de/StructureDefi nition/KBV_EX_ERP_Medication_Vaccine']/fhir:valueBoolean 
+{{Medication_FreeText}} 
+fhir:extension[@url='https://fhir.kbv.de/StructureDefi nition/KBV_EX_ERP_Medication_Vaccine']/fhir:valueBoolean"
+bvg,85,"Kennzeichnung BVG, Schlüssel: 
+0= nein 
+1 = ja 
+Wenn Kennzeichnung „1“ gesetzt ist, werden durch die Software die 
+Versichertendaten gelöscht.",1,numerisch,https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Prescription,x,fhir:extension[@url='https://fhir.kbv.de/StructureDefi nition/KBV_EX_ERP_BVG']/fhir:valueBoolean
+mehrfach_kn,87,"Kennzeichen Mehrfachverordnung 0 = nein 
+1 = ja",1,numerisch,https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Prescription,,fhir:extension[@url='https://fhir.kbv.de/StructureDefi nition/KBV_EX_ERP_Multiple_Prescription']/fhir:exten sion[@url='Kennzeichen']/fhir:valueBoolean
+mehrfach_z,88,Zähler Mehrfachverordnung,leer oder 1,alphanumerisch,https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Prescription,,fhir:extension[@url='https://fhir.kbv.de/StructureDefi nition/KBV_EX_ERP_Multiple_Prescription']/fhir:exten sion[@url='Nummerierung']/fhir:valueRatio/fhir:nume rator/fhir:value
+mehrfach_n,89,Nenner Mehrfachverordnung,leer oder 1,alphanumerisch,https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Prescription,,fhir:extension[@url='https://fhir.kbv.de/StructureDefi nition/KBV_EX_ERP_Multiple_Prescription']/fhir:exten sion[@url='Nummerierung']/fhir:valueRatio/fhir:deno minator/fhir:value
+mehrfach_sta rt,90,Beginn der Einlöse-Frist der Verordnung in dem Format „JJJJMMTT“,leer oder 8,alphanumerisch,https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Prescription,x,fhir:extension[@url='https://fhir.kbv.de/StructureDefi nition/KBV_EX_ERP_Multiple_Prescription']/fhir:exten sion[@url='Zeitraum']/fhir:valuePeriod/fhir:start
+mehrfach_en de,91,Ende der Einlöse-Frist der Verordnung in dem Format „JJJJMMTT“,leer oder 8,alphanumerisch,https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Prescription,x,fhir:extension[@url='https://fhir.kbv.de/StructureDefi nition/KBV_EX_ERP_Multiple_Prescription']/fhir:exten sion[@url='Zeitraum']/fhir:valuePeriod/fhir:end
+aut_idem,102,"Kennzeichnung aut idem, Schlüssel: 0 = Substitution ausgeschlossen (nicht austauschbar) 
+1 = Substitution erlaubt (austauschbar)",1,numerisch,https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Prescription,x,fhir:substitution/fhir:allowedBoolean
+v_df,103,Darreichungsform entsprechend der Daten nach § 131 Abs. 4 SGB V,..30,alphanumerisch,"https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_PZN 
+https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_Ingredie nt 
+https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_Compou nding 
+https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_FreeText",,"{{Medication_PZN}} 
+fhir:form/fhir:coding/fhir:code 
+{{Medication_Ingredient}} 
+fhir:form/fhir:text 
+{{Medication_Compounding}} 
+fhir:form/fhir:text 
+{{Medication_FreeText}} 
+fhir:form/fhir:text"
+dosierung_kn,107,"Kennzeichen Dosierung 
+0 = Dosierungsanweisung / 
+Medikationsplan mitgegeben 
+1 = Dosierung gemäß Angaben in dieser Verordnung",leer oder 1,alphanumerisch,https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Prescription,x,fhir:dosageInstruction/fhir:extension[@url='https://fhi r.kbv.de/StructureDefinition/KBV_EX_ERP_DosageFlag ']/fhir:valueBoolean
+dosierung,108,"Dosierungsanweisung 
+Bitte kein: Semikolon (;), 
+Anführungszeichen („), \r, \n, \t (in dieser Spalte)",..60,alphanumerisch,https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Prescription,x,fhir:dosageInstruction/fhir:text
+v_normgroess e,110,Therapiegerechte Packungsgröße nach N Bezeichnung,..10,alphanumerisch,"https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_PZN 
+https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_Ingredie nt",,"{{Medication_PZN}} 
+fhir:extension[@url='http://fhir.de/StructureDefinition /normgroesse']/fhir:valueCode 
+{{Medication_Ingredient}} 
+fhir:extension[@url='http://fhir.de/StructureDefinition /normgroesse']/fhir:valueCode"
+v_staerke,111,Packungsgröße nach abgeteilter Menge,..7,alphanumerisch,"https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_PZN 
+https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_Ingredie nt",,"{{Medication_PZN}} 
+fhir:amount/fhir:numerator/fhir:extension[@url='http s://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medi cation_PackagingSize']/fhir:valueString 
+fhir:amount/fhir:numerator/fhir:value 
+{{Medication_Ingredient}} 
+fhir:amount/fhir:numerator/fhir:extension[@url='http s://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medi cation_PackagingSize']/fhir:valueString 
+fhir:amount/fhir:numerator/fhir:value"
+v_einheit,112,Einheit,..15,alphanumerisch,"https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_PZN 
+https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_Ingredie nt",,"{{Medication_PZN}} 
+fhir:amount/fhir:numerator/fhir:unit 
+{{Medication_Ingredient}} 
+fhir:amount/fhir:numerator/fhir:unit"
+v_anz_packun gen,113,Anzahl der verordneten Packungen,..3,alphanumerisch,https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Prescription,,fhir:dispenseRequest/fhir:quantity/fhir:value
+v_pzn,115,Pharmazentralnummer des verordneten Produktes,"leer 
+oder 
+8 oder 10",alphanumerisch,https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_PZN,,fhir:code/fhir:coding/fhir:code
+v_wirkstoffnr,118,"Wirkstoffnummer (ASK-Nummer, falls vorhanden) 
+sofern mehrere Wirkstoffe angegeben sind, nur den 1. Eintrag berücksichtigen",..20,alphanumerisch,https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_Ingredie nt,x,fhir:ingredient/fhir:itemCodeableConcept/fhir:coding/ fhir:code
+v_wirkstoff,119,Wirkstoffname,..80,alphanumerisch,https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_Ingredie nt,,fhir:ingredient/fhir:itemCodeableConcept/fhir:text
+v_wirkstaerke,120,Wirkstärke,..15,alphanumerisch,https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_Ingredie nt,,fhir:ingredient/fhir:strength/fhir:numerator/fhir:value
+v_wirkstaerke _einheit,121,Wirkstärkeneinheit,..15,alphanumerisch,https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_Ingredie nt,,fhir:ingredient/fhir:strength/fhir:numerator/fhir:unit
+v_rezeptur,123,Rezepturname,..80,alphanumerisch,https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_Compou nding,,"{{Form der Rezeptur}} 
+fhir:Medication/fhir:code/fhir:coding/fhir:system[@val ue='https://fhir.kbv.de/CodeSystem/KBV_CS_ERP_Me dication_Type']/../fhir:code[@value='rezeptur']/../../../ fhir:form/fhir:text"
+v_rezeptur_m enge,124,Gesamtmenge der Rezeptur,..7,alphanumerisch,https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_Compou nding,,fhir:Medication/fhir:code/fhir:coding/fhir:system[@val ue='https://fhir.kbv.de/CodeSystem/KBV_CS_ERP_Me dication_Type']/../fhir:code[@value='rezeptur']/../../../ fhir:amount/fhir:numerator/fhir:extension/fhir:valueSt ring
+v_rezeptur_ei nheit,125,Einheit der Gesamtmenge,..15,alphanumerisch,https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_Compou nding,,fhir:Medication/fhir:code/fhir:coding/fhir:system[@val ue='https://fhir.kbv.de/CodeSystem/KBV_CS_ERP_Me dication_Type']/../fhir:code[@value='rezeptur']/../../../ fhir:amount/fhir:numerator/fhir:unit
+q_datum,"kein 
+Bezug",Quittungsdatum; Datum des Abrufs aus der TI in dem Format „JJJJMMTT“.,8,numerisch,"https://gematik.de/fhir/StructureDefi nition/ErxComposition 
+https://gematik.de/fhir/erp/Structure Definition/GEM_ERP_PR_Compositio n",x,"{{ErxComposition}} 
+fhir:date 
+{{PR_Composition}} 
+fhir:date"
+a_datum,5,Datum der Abgabe des verordneten Mittels in dem Format „JJJJMMTT“.,8,numerisch,http://fhir.abda.de/eRezeptAbgabeda ten/StructureDefinition/DAV-PR-ERP Abgabeinformationen,x,fhir:MedicationDispense/fhir:whenHandedOver
+g_zuz_vo,6,Gesamt Zuzahlung in Cent,1..12,numerisch,http://fhir.abda.de/eRezeptAbgabeda ten/StructureDefinition/DAV-PR-ERP Abrechnungszeilen,x,"fhir:Invoice/fhir:totalGross/fhir:extension[@url=""http: //fhir.abda.de/eRezeptAbgabedaten/StructureDefiniti on/DAV-EX-ERP 
+Gesamtzuzahlung""]/fhir:valueMoney/fhir:value"
+g_avp_vo,7,Gesamt-Brutto in Cent,1..12,numerisch,http://fhir.abda.de/eRezeptAbgabeda ten/StructureDefinition/DAV-PR-ERP Abrechnungszeilen,x,fhir:Invoice/fhir:totalGross/fhir:value
+vertrag_kn,8,"Vertragskennzeichen: 
+0 = keine Angabe 
+1 = VO nach § 116b Abs. 1 SGB V 
+11 = VO nach § 116b Abs.1 SGB V bei Ersatzverordnung 
+4 = VO im Rahmen des Entlass 
+Managements nach § 39 Abs. 1a SGB V 14 = VO im Rahmen des Entlass 
+Managements nach § 39 Abs. 1a SGB V bei Ersatzverordnung 
+7 = VO Terminservicestellen nach § 75 Abs. 1a SGB V 
+17 = VO Terminservicestellen nach § 75 Abs. 1a SGB V bi Ersatzverordnung 55 = Verordnung im Rahmen von Modellvorhaben nach § 64d SGB V",..2,alphanumerisch,http://fhir.abda.de/eRezeptAbgabeda ten/StructureDefinition/DAV-PR-ERP Abgabeinformationen,x,"{{Nicht in Beispieldaten vorhanden!}} 
+fhir:extension[@url='http://fhir.abda.de/eRezeptAbga bedaten/StructureDefinition/DAV-EX-ERP Vertragskennzeichen']/fhir:valueString"
+rz_aend,37,"Schlüssel Rezeptänderung 
+1 = Abweichung von der VO bzgl. der Darreichungsform bei FAM 
+2 = Korrektur/Ergänzung der DF bei Rezepturen 
+3 = Korrektur/Ergänzung der 
+Gebrauchsanweisung bei einer Rezeptur 4 = Korrektur/Ergänzung der 
+Dosierungsanweisung 
+5 = Ergänzung eines fehlenden Hinweises auf ein Medikationsplan, der das verschriebene Arzneimittel umfasst, oder auf eine schriftliche Dosierungsanweisung 6 = Abweichung von der Verordnung bzgl. der Bezeichnung des FAM 
+7 = Abweichung von der Verordnung bzw. der Bezeichnung des Wirkstoffs bei einer Wirkstoffverordnung 
+8 = Abweichung von der Verordnung bzgl. der der Stärke eines FAM oder Wirkstoffs 9 = Abweichung von der Verordnung bzgl. der Zusammensetzung von Rezepturen nach Art und Menge 
+10 = Abweichung von der Verordnung bzgl. der abzugebenden Menge 
+11 = Abweichung von der Verordnung bzgl. der abzugebenden Rezepturmenge auf eine Reichdauer bis zu 7 Tagen bei Entlass-Verordnungen 
+12 = Freitextliche Dokumentation der Änderung, wenn keiner der anderen Schlüssel / Fälle vorliegt 
+Bei Vorliegen mehrerer Schlüssel ist nur der erste Eintrag zu nehmen",..3,alphanumerisch,http://fhir.abda.de/eRezeptAbgabeda ten/StructureDefinition/DAV-PR-ERP Abgabeinformationen,x,"fhir:substitution/fhir:extension[@url='http://fhir.abda. de/eRezeptAbgabedaten/StructureDefinition/DAV-EX ERP 
+Rezeptaenderung']/fhir:extension[@url='ArtRezeptaen derung']/fhir:valueCodeableConcept/fhir:coding/fhir:c ode"
+zaehler_abr_z eile,19,Zähler Abrechnungszeile,1..n,numerisch,http://fhir.abda.de/eRezeptAbgabeda ten/StructureDefinition/DAV-PR-ERP Abrechnungszeilen,,fhir:Invoice/fhir:lineItem/fhir:sequence
+pzn,20,"Pharmazentralnummer (PZN), 
+Hilfsmittelnummer oder 
+Sonderkennzeichen aus TA1","8 
+oder 
+10",alphanumerisch,http://fhir.abda.de/eRezeptAbgabeda ten/StructureDefinition/DAV-PR-ERP Abrechnungszeilen,,"{{PZN}} 
+fhir:Invoice/fhir:lineItem/fhir:chargeItemCodeableCon cept/fhir:coding[fhir:system/@value='http://fhir.de/C odeSystem/ifa/pzn']/fhir:code 
+{{Sonderkennzeichen}} 
+fhir:Invoice/fhir:lineItem/fhir:chargeItemCodeableCon cept/fhir:coding[fhir:system/@value='http://TA1.abda .de']/fhir:code 
+{{Hilfsmittelnummer – Nicht in Beispieldaten!}} fhir:Invoice/fhir:lineItem/fhir:chargeItemCodeableCon cept/fhir:coding[fhir:system/@value='http://fhir.de/si d/gkv/hmnr']/fhir:code"
+chargen_bez,21,"Angabe der Chargenbezeichnung bei authentifizierungspflichtigen 
+Arzneimitteln; 
+Bei Vorliegen mehrerer 
+Chargenbezeichnungen ist nur der erste Eintrag zu nehmen",..100,alphanumerisch,http://fhir.abda.de/eRezeptAbgabeda ten/StructureDefinition/DAV-PR-ERP Abrechnungszeilen,x,"{{Nicht in Beispieldaten!}} 
+fhir:Invoice/fhir:lineItem/fhir:extension[@url='http://f hir.abda.de/eRezeptAbgabedaten/StructureDefinition/ DAV-EX-ERP-Chargenbezeichnung']/value"
+menge,22,Mengenfaktor,1..6,numerisch,http://fhir.abda.de/eRezeptAbgabeda ten/StructureDefinition/DAV-PR-ERP Abrechnungszeilen,,fhir:Invoice/fhir:lineItem/fhir:priceComponent/fhir:fac tor
+apo_vo,23,"Gesamter Bruttopreis für eine 
+Abrechnungszeile in Cent",1..12,numerisch,http://fhir.abda.de/eRezeptAbgabeda ten/StructureDefinition/DAV-PR-ERP Abrechnungszeilen,x,fhir:Invoice/fhir:lineItem/fhir:priceComponent/fhir:am ount/fhir:value
+k_vers_zuz,27,Zuzahlung in Cent,1..12,numerisch,http://fhir.abda.de/eRezeptAbgabeda ten/StructureDefinition/DAV-PR-ERP Abrechnungszeilen,x,"fhir:priceComponent/fhir:extension[@url='http://fhir. abda.de/eRezeptAbgabedaten/StructureDefinition/DA V-EX-ERP 
+KostenVersicherter']/fhir:extension[@url='Kategorie' and 
+fhir:valueCodeableConcept/fhir:coding/fhir:code/@val ue=0]/following 
+sibling::fhir:extension[@url='Kostenbetrag']/fhir:value Money/fhir:value"
+k_vers_mehrk,27,Mehrkosten in Cent,1..12,numerisch,http://fhir.abda.de/eRezeptAbgabeda ten/StructureDefinition/DAV-PR-ERP Abrechnungszeilen,x,"fhir:priceComponent/fhir:extension[@url='http://fhir. abda.de/eRezeptAbgabedaten/StructureDefinition/DA V-EX-ERP 
+KostenVersicherter']/fhir:extension[@url='Kategorie' and 
+fhir:valueCodeableConcept/fhir:coding/fhir:code/@val ue=1]/following 
+sibling::fhir:extension[@url='Kostenbetrag']/fhir:value Money/fhir:value"
+k_vers_eigen b,27,Eigenbeteiligung des Versicherten in Cent,1..12,numerisch,http://fhir.abda.de/eRezeptAbgabeda ten/StructureDefinition/DAV-PR-ERP Abrechnungszeilen,x,"fhir:priceComponent/fhir:extension[@url='http://fhir. abda.de/eRezeptAbgabedaten/StructureDefinition/DA V-EX-ERP 
+KostenVersicherter']/fhir:extension[@url='Kategorie' and 
+fhir:valueCodeableConcept/fhir:coding/fhir:code/@val ue=2]/following 
+sibling::fhir:extension[@url='Kostenbetrag']/fhir:value Money/fhir:value"
+s_markt,30,"Schlüssel Markt 
+0 = nicht betroffen 
+1 = Generika 
+2 = Solitär 
+3 = Mehrfachvertrieb 
+4 = aut-idem gesetzt 
+5 = Produkt der 
+Substitutionsausschussliste",1,numerisch,http://fhir.abda.de/eRezeptAbgabeda ten/StructureDefinition/DAV-PR-ERP Abrechnungszeilen,,"fhir:extension[@url='http://fhir.abda.de/eRezeptAbga bedaten/StructureDefinition/DAV-EX-ERP Zusatzattribute']/fhir:extension[@url='ZusatzattributF AM']/fhir:extension[@url='Markt']/fhir:extension[@url ='Gruppe' and 
+fhir:valueCodeableConcept/fhir:coding/fhir:code/@val ue=1]/../fhir:extension[@url='Schluessel']/fhir:valueCo deableConcept/fhir:coding/fhir:code"
+s_rabatt,30,"Schlüssel Rabattvertragserfüllung: 0 = nicht relevant 
+1 = ja, abgegeben 
+2 = nein, Nicht-Verfügbarkeit 
+3 = nein, dringender Fall 
+4 = nein, sonstige Bedenken",1,numerisch,http://fhir.abda.de/eRezeptAbgabeda ten/StructureDefinition/DAV-PR-ERP Abrechnungszeilen,,"fhir:extension[@url='http://fhir.abda.de/eRezeptAbga bedaten/StructureDefinition/DAV-EX-ERP Zusatzattribute']/fhir:extension[@url='ZusatzattributF AM']/fhir:extension[@url='Rabattvertragserfuellung']/ fhir:extension[@url='Gruppe' and 
+fhir:valueCodeableConcept/fhir:coding/fhir:code/@val ue=2]/../fhir:extension[@url='Schluessel']/fhir:valueCo deableConcept/fhir:coding/fhir:code"
+s_preisg,30,"Schlüssel preisgünstiges FAM: 
+0 = nicht relevant 
+1 = ja, abgegeben 
+2 = nein, Nicht-Verfügbarkeit 
+3 = nein, dringender Fall 
+4 = nein, sonstige Bedenken 
+5 = nicht abgegeben",1,numerisch,http://fhir.abda.de/eRezeptAbgabeda ten/StructureDefinition/DAV-PR-ERP Abrechnungszeilen,,"fhir:extension[@url='http://fhir.abda.de/eRezeptAbga bedaten/StructureDefinition/DAV-EX-ERP Zusatzattribute']/fhir:extension[@url='ZusatzattributF AM']/fhir:extension[@url='PreisguenstigesFAM']/fhir:e xtension[@url='Gruppe' and 
+fhir:valueCodeableConcept/fhir:coding/fhir:code/@val ue=3]/../fhir:extension[@url='Schluessel']/fhir:valueCo deableConcept/fhir:coding/fhir:code"
+s_import_fam,30,"Schlüssel Import FAM 
+0 = nicht relevant 
+1 = ja, abgegeben 
+2 = nein, Nicht-Verfügbarkeit 
+3 = nein, dringender Fall 
+4 = nein, sonstige Bedenken 
+5 = nicht abgegeben",1,numerisch,http://fhir.abda.de/eRezeptAbgabeda ten/StructureDefinition/DAV-PR-ERP Abrechnungszeilen,,"fhir:extension[@url='http://fhir.abda.de/eRezeptAbga bedaten/StructureDefinition/DAV-EX-ERP Zusatzattribute']/fhir:extension[@url='ZusatzattributF AM']/fhir:extension[@url='ImportFAM']/fhir:extension [@url='Gruppe' and 
+fhir:valueCodeableConcept/fhir:coding/fhir:code/@val ue=4]/../fhir:extension[@url='Schluessel']/fhir:valueCo deableConcept/fhir:coding/fhir:code"
+s_mehrkosten _uebern,30,"Schlüssel Mehrkostenübernahme: 1 = ja, nach § 129 Abs. 4c SGB V 
+2 = ja, nach Rabattvertrag",leer oder 1,alphanumerisch,http://fhir.abda.de/eRezeptAbgabeda ten/StructureDefinition/DAV-PR-ERP Abrechnungszeilen,,"{{Nicht in Beispieldaten vorhanden!}} 
+fhir:extension[@url='http://fhir.abda.de/eRezeptAbga bedaten/StructureDefinition/DAV-EX-ERP Zusatzattribute']/fhir:extension[@url='ZusatzattributM ehrkostenuebernahme']/fhir:extension[@url='Gruppe' and 
+fhir:valueCodeableConcept/fhir:coding/fhir:code/@val ue=5]/../fhir:extension[@url='Schluessel']/fhir:valueCo deableConcept/fhir:coding/fhir:code"
+s_wunsch_am,30,"Schlüssel Wunscharzneimittel 
+1 = Abgabeangaben sind nicht zu beachten",leer oder 1,alphanumerisch,http://fhir.abda.de/eRezeptAbgabeda ten/StructureDefinition/DAV-PR-ERP Abrechnungszeilen,,"{{Nicht in Beispieldaten vorhanden!}} 
+fhir:extension[@url='http://fhir.abda.de/eRezeptAbga bedaten/StructureDefinition/DAV-EX-ERP Zusatzattribute']/fhir:extension[@url='ZusatzattributW unscharzneimittel']/fhir:extension[@url='Gruppe' and fhir:valueCodeableConcept/fhir:coding/fhir:code/@val ue=6]/../fhir:extension[@url='Schluessel']/fhir:valueCo deableConcept/fhir:coding/fhir:code"
+s_wirkstoffvo,30,"Schlüssel Wirkstoffverordnung 
+1 = ja",leer oder 1,alphanumerisch,http://fhir.abda.de/eRezeptAbgabeda ten/StructureDefinition/DAV-PR-ERP Abrechnungszeilen,,"{{Nicht in Beispieldaten vorhanden!}} 
+fhir:extension[@url='http://fhir.abda.de/eRezeptAbga bedaten/StructureDefinition/DAV-EX-ERP Zusatzattribute']/fhir:extension[@url='ZusatzattributW irkstoffverordnung']/fhir:extension[@url='Gruppe' and fhir:valueCodeableConcept/fhir:coding/fhir:code/@val ue=7]/../fhir:extension[@url='Schluessel']/fhir:valueCo deableConcept/fhir:coding/fhir:code"
+s_ersatzvo,30,"Schlüssel Ersatzverordnung 
+1 = ja",leer oder 1,alphanumerisch,http://fhir.abda.de/eRezeptAbgabeda ten/StructureDefinition/DAV-PR-ERP Abrechnungszeilen,,"{{Nicht in Beispieldaten vorhanden!}} 
+fhir:extension[@url='http://fhir.abda.de/eRezeptAbga bedaten/StructureDefinition/DAV-EX-ERP Zusatzattribute']/fhir:extension[@url='ZusatzattributEr satzverordnung']/fhir:extension[@url='Gruppe' and fhir:valueCodeableConcept/fhir:coding/fhir:code/@val ue=8]/../fhir:extension[@url='Schluessel']/fhir:valueCo deableConcept/fhir:coding/fhir:code"
+s_kuenstl_bef,30,"Schlüssel künstliche Befruchtung 
+1 = ja, Abgabeangaben sind nicht zu beachten",leer oder 1,alphanumerisch,http://fhir.abda.de/eRezeptAbgabeda ten/StructureDefinition/DAV-PR-ERP Abrechnungszeilen,,"{{Nicht in Beispieldaten vorhanden!}} 
+fhir:extension[@url='http://fhir.abda.de/eRezeptAbga bedaten/StructureDefinition/DAV-EX-ERP Zusatzattribute']/fhir:extension[@url='ZusatzattributK uenstlicheBefruchtung']/fhir:extension[@url='Gruppe' and 
+fhir:valueCodeableConcept/fhir:coding/fhir:code/@val ue=9]/../fhir:extension[@url='Schluessel']/fhir:valueCo deableConcept/fhir:coding/fhir:code"
+s_e_imp_fam,30,"Schlüssel einzeln importierte 
+Fertigarzneimittel 
+1 = ja, Abgabeangaben sind nicht zu beachten",leer oder 1,alphanumerisch,http://fhir.abda.de/eRezeptAbgabeda ten/StructureDefinition/DAV-PR-ERP Abrechnungszeilen,,"{{Nicht in Beispieldaten vorhanden!}} 
+fhir:extension[@url='http://fhir.abda.de/eRezeptAbga bedaten/StructureDefinition/DAV-EX-ERP Zusatzattribute']/fhir:extension[@url='ZusatzattributEi nzelimportierteFAM']/fhir:extension[@url='Gruppe' and 
+fhir:valueCodeableConcept/fhir:coding/fhir:code/@val ue=10]/../fhir:extension[@url='Schluessel']/fhir:valueC odeableConcept/fhir:coding/fhir:code"
+s_notdienst,30,"Schlüssel Abgabe im Notdienst 
+1 = ja",leer oder 1,alphanumerisch,http://fhir.abda.de/eRezeptAbgabeda ten/StructureDefinition/DAV-PR-ERP Abrechnungszeilen,,"{{Nicht in Beispieldaten vorhanden!}} 
+fhir:extension[@url='http://fhir.abda.de/eRezeptAbga bedaten/StructureDefinition/DAV-EX-ERP Zusatzattribute']/fhir:extension[@url='ZusatzattributA bgabeNoctu']/fhir:extension[@url='Gruppe' and fhir:valueCodeableConcept/fhir:coding/fhir:code/@val ue=11]/../fhir:extension[@url='Schluessel']/fhir:valueC odeableConcept/fhir:coding/fhir:code"
+s_zuzahlungss tatus,30,"Dokumentation Zuzahlungsbefreiung in Apotheke 
+0 = von Zuzahlungspflicht nicht befreit 1 = von Zuzahlungspflicht befreit",leer oder 1,alphanumerisch,http://fhir.abda.de/eRezeptAbgabeda ten/StructureDefinition/DAV-PR-ERP Abrechnungszeilen,,"{{Nicht in Beispieldaten vorhanden!}} 
+fhir:extension[@url='http://fhir.abda.de/eRezeptAbga bedaten/StructureDefinition/DAV-EX-ERP Zusatzattribute']/fhir:extension[@url='ZusatzattributZ uzahlungsstatus']/fhir:extension[@url='Gruppe' and fhir:valueCodeableConcept/fhir:coding/fhir:code/@val ue=15]/../fhir:extension[@url='Schluessel']/fhir:valueC odeableConcept/fhir:coding/fhir:code"
